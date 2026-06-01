@@ -4,9 +4,7 @@
     const sections = document.querySelectorAll('.section');
     const topbar = document.getElementById('topbar');
     const exploreBtn = document.getElementById('exploreBtn');
-    const contactForm = document.getElementById('contactForm');
     
-    // Función para cambiar el botón activo
     function setActiveButton(targetId) {
         buttons.forEach(btn => {
             if (btn.dataset.target === targetId) {
@@ -17,7 +15,6 @@
         });
     }
     
-    // Scroll suave con offset
     function smoothScrollTo(element) {
         const offset = 80;
         const elementPosition = element.getBoundingClientRect().top;
@@ -29,7 +26,7 @@
         });
     }
     
-    // Navegación por botones
+    // Navegación
     buttons.forEach(button => {
         button.addEventListener('click', (e) => {
             const targetId = button.dataset.target;
@@ -42,169 +39,7 @@
         });
     });
     
-    // Botón Explore
     if (exploreBtn) {
         exploreBtn.addEventListener('click', () => {
             const projectsSection = document.getElementById('projects');
             if (projectsSection) {
-                smoothScrollTo(projectsSection);
-                setActiveButton('projects');
-            }
-        });
-    }
-    
-    // Detectar scroll para actualizar botón activo
-    function updateActiveSectionOnScroll() {
-        const scrollPosition = window.scrollY + 120;
-        let currentSection = 'home';
-        
-        sections.forEach(section => {
-            const sectionTop = section.offsetTop;
-            const sectionBottom = sectionTop + section.offsetHeight;
-            if (scrollPosition >= sectionTop && scrollPosition < sectionBottom) {
-                currentSection = section.id;
-            }
-        });
-        
-        setActiveButton(currentSection);
-    }
-    
-    // Efecto navbar
-    function handleNavbarScroll() {
-        if (window.scrollY > 50) {
-            topbar.classList.add('scrolled');
-        } else {
-            topbar.classList.remove('scrolled');
-        }
-    }
-    
-    // Animación de números (stats)
-    function animateNumbers() {
-        const stats = document.querySelectorAll('.stat-number');
-        stats.forEach(stat => {
-            const target = parseInt(stat.dataset.target);
-            let current = 0;
-            const increment = target / 50;
-            const updateNumber = () => {
-                if (current < target) {
-                    current += increment;
-                    stat.textContent = Math.floor(current);
-                    requestAnimationFrame(updateNumber);
-                } else {
-                    stat.textContent = target;
-                }
-            };
-            
-            const observer = new IntersectionObserver((entries) => {
-                entries.forEach(entry => {
-                    if (entry.isIntersecting) {
-                        updateNumber();
-                        observer.unobserve(entry.target);
-                    }
-                });
-            }, { threshold: 0.5 });
-            
-            observer.observe(stat);
-        });
-    }
-    
-    // Rotating text effect
-    function setupRotatingText() {
-        const words = ['Games', 'Systems', 'Bypasses', 'Scripts'];
-        let index = 0;
-        const rotatingElement = document.querySelector('.rotating-text');
-        
-        if (rotatingElement) {
-            setInterval(() => {
-                index = (index + 1) % words.length;
-                rotatingElement.style.opacity = '0';
-                setTimeout(() => {
-                    rotatingElement.textContent = words[index];
-                    rotatingElement.style.opacity = '1';
-                }, 300);
-            }, 2000);
-        }
-    }
-    
-    // Manejar hash en URL
-    function handleHashOnLoad() {
-        const urlHash = window.location.hash.slice(1);
-        if (urlHash) {
-            const targetSection = document.getElementById(urlHash);
-            if (targetSection) {
-                setTimeout(() => {
-                    smoothScrollTo(targetSection);
-                    setActiveButton(urlHash);
-                }, 100);
-            }
-        }
-    }
-    
-    // Formulario de contacto
-    if (contactForm) {
-        contactForm.addEventListener('submit', (e) => {
-            e.preventDefault();
-            const name = document.getElementById('name').value;
-            const email = document.getElementById('email').value;
-            const message = document.getElementById('message').value;
-            
-            if (name && email && message) {
-                alert(`✨ Thanks ${name}! Your message has been sent. I'll get back to you soon. ✨`);
-                contactForm.reset();
-            } else {
-                alert('⚠️ Please fill in all fields ⚠️');
-            }
-        });
-    }
-    
-    // Observer para animaciones de tarjetas
-    const observerOptions = {
-        threshold: 0.1,
-        rootMargin: '0px 0px -50px 0px'
-    };
-    
-    const cardObserver = new IntersectionObserver((entries) => {
-        entries.forEach(entry => {
-            if (entry.isIntersecting) {
-                entry.target.style.opacity = '1';
-                entry.target.style.transform = 'translateY(0)';
-            }
-        });
-    }, observerOptions);
-    
-    document.querySelectorAll('.project-card, .fade-in').forEach(el => {
-        if (el.classList.contains('fade-in')) {
-            // Ya tiene su propia animación
-        } else {
-            el.style.opacity = '0';
-            el.style.transform = 'translateY(20px)';
-            el.style.transition = 'all 0.5s ease-out';
-            cardObserver.observe(el);
-        }
-    });
-    
-    // Event listeners
-    window.addEventListener('scroll', () => {
-        updateActiveSectionOnScroll();
-        handleNavbarScroll();
-    });
-    
-    window.addEventListener('load', () => {
-        handleHashOnLoad();
-        updateActiveSectionOnScroll();
-        handleNavbarScroll();
-        animateNumbers();
-        setupRotatingText();
-    });
-    
-    window.addEventListener('hashchange', () => {
-        const urlHash = window.location.hash.slice(1);
-        if (urlHash) {
-            const targetSection = document.getElementById(urlHash);
-            if (targetSection) {
-                smoothScrollTo(targetSection);
-                setActiveButton(urlHash);
-            }
-        }
-    });
-})();
