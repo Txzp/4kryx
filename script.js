@@ -3,6 +3,8 @@
     const buttons = document.querySelectorAll('.nav-buttons button');
     const sections = document.querySelectorAll('.section');
     const topbar = document.getElementById('topbar');
+    const exploreBtn = document.getElementById('exploreBtn');
+    const contactForm = document.getElementById('contactForm');
     
     // Función para cambiar el botón activo
     function setActiveButton(targetId) {
@@ -15,9 +17,9 @@
         });
     }
     
-    // Scroll suave con offset para la navbar fija
+    // Scroll suave con offset
     function smoothScrollTo(element) {
-        const offset = 80; // altura del header
+        const offset = 80;
         const elementPosition = element.getBoundingClientRect().top;
         const offsetPosition = elementPosition + window.pageYOffset - offset;
         
@@ -35,16 +37,25 @@
             if (targetSection) {
                 setActiveButton(targetId);
                 smoothScrollTo(targetSection);
-                // Actualizar URL sin recargar
                 history.pushState(null, '', `#${targetId}`);
             }
         });
     });
     
+    // Botón Explore
+    if (exploreBtn) {
+        exploreBtn.addEventListener('click', () => {
+            const projectsSection = document.getElementById('projects');
+            if (projectsSection) {
+                smoothScrollTo(projectsSection);
+                setActiveButton('projects');
+            }
+        });
+    }
+    
     // Detectar scroll para actualizar botón activo
     function updateActiveSectionOnScroll() {
-        const scrollPosition = window.scrollY + 120; // offset para activar antes
-        
+        const scrollPosition = window.scrollY + 120;
         let currentSection = 'home';
         
         sections.forEach(section => {
@@ -58,7 +69,7 @@
         setActiveButton(currentSection);
     }
     
-    // Efecto navbar al hacer scroll
+    // Efecto navbar
     function handleNavbarScroll() {
         if (window.scrollY > 50) {
             topbar.classList.add('scrolled');
@@ -67,7 +78,55 @@
         }
     }
     
-    // Manejar hash en la URL al cargar
+    // Animación de números (stats)
+    function animateNumbers() {
+        const stats = document.querySelectorAll('.stat-number');
+        stats.forEach(stat => {
+            const target = parseInt(stat.dataset.target);
+            let current = 0;
+            const increment = target / 50;
+            const updateNumber = () => {
+                if (current < target) {
+                    current += increment;
+                    stat.textContent = Math.floor(current);
+                    requestAnimationFrame(updateNumber);
+                } else {
+                    stat.textContent = target;
+                }
+            };
+            
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        updateNumber();
+                        observer.unobserve(entry.target);
+                    }
+                });
+            }, { threshold: 0.5 });
+            
+            observer.observe(stat);
+        });
+    }
+    
+    // Rotating text effect
+    function setupRotatingText() {
+        const words = ['Games', 'Systems', 'Bypasses', 'Scripts'];
+        let index = 0;
+        const rotatingElement = document.querySelector('.rotating-text');
+        
+        if (rotatingElement) {
+            setInterval(() => {
+                index = (index + 1) % words.length;
+                rotatingElement.style.opacity = '0';
+                setTimeout(() => {
+                    rotatingElement.textContent = words[index];
+                    rotatingElement.style.opacity = '1';
+                }, 300);
+            }, 2000);
+        }
+    }
+    
+    // Manejar hash en URL
     function handleHashOnLoad() {
         const urlHash = window.location.hash.slice(1);
         if (urlHash) {
@@ -81,6 +140,49 @@
         }
     }
     
+    // Formulario de contacto
+    if (contactForm) {
+        contactForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            const name = document.getElementById('name').value;
+            const email = document.getElementById('email').value;
+            const message = document.getElementById('message').value;
+            
+            if (name && email && message) {
+                alert(`✨ Thanks ${name}! Your message has been sent. I'll get back to you soon. ✨`);
+                contactForm.reset();
+            } else {
+                alert('⚠️ Please fill in all fields ⚠️');
+            }
+        });
+    }
+    
+    // Observer para animaciones de tarjetas
+    const observerOptions = {
+        threshold: 0.1,
+        rootMargin: '0px 0px -50px 0px'
+    };
+    
+    const cardObserver = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                entry.target.style.opacity = '1';
+                entry.target.style.transform = 'translateY(0)';
+            }
+        });
+    }, observerOptions);
+    
+    document.querySelectorAll('.project-card, .fade-in').forEach(el => {
+        if (el.classList.contains('fade-in')) {
+            // Ya tiene su propia animación
+        } else {
+            el.style.opacity = '0';
+            el.style.transform = 'translateY(20px)';
+            el.style.transition = 'all 0.5s ease-out';
+            cardObserver.observe(el);
+        }
+    });
+    
     // Event listeners
     window.addEventListener('scroll', () => {
         updateActiveSectionOnScroll();
@@ -91,9 +193,10 @@
         handleHashOnLoad();
         updateActiveSectionOnScroll();
         handleNavbarScroll();
+        animateNumbers();
+        setupRotatingText();
     });
     
-    // Cuando se cambia el hash manualmente
     window.addEventListener('hashchange', () => {
         const urlHash = window.location.hash.slice(1);
         if (urlHash) {
@@ -103,28 +206,5 @@
                 setActiveButton(urlHash);
             }
         }
-    });
-    
-    // Intersection Observer para animar las tarjetas de proyectos
-    const observerOptions = {
-        threshold: 0.1,
-        rootMargin: '0px 0px -50px 0px'
-    };
-    
-    const observer = new IntersectionObserver((entries) => {
-        entries.forEach(entry => {
-            if (entry.isIntersecting) {
-                entry.target.style.opacity = '1';
-                entry.target.style.transform = 'translateY(0)';
-            }
-        });
-    }, observerOptions);
-    
-    // Aplicar estilos iniciales y observar cada tarjeta
-    document.querySelectorAll('.project-card').forEach(card => {
-        card.style.opacity = '0';
-        card.style.transform = 'translateY(20px)';
-        card.style.transition = 'all 0.5s ease-out';
-        observer.observe(card);
     });
 })();
