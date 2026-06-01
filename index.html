@@ -7,9 +7,9 @@
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-    <header class="topbar">
+    <header class="topbar" id="topbar">
         <nav class="nav-buttons">
-            <button data-target="home">Home</button>
+            <button data-target="home" class="active">Home</button>
             <button data-target="about">About</button>
             <button data-target="projects">Projects</button>
         </nav>
@@ -18,28 +18,50 @@
     <main>
         <section id="home" class="section home-section">
             <div class="home-content">
-                <p class="intro-label">HI, I'M 4KRYX</p>
-                <h1 class="main-title">---// DEVELOPER & CREATOR</h1>
-                <p class="description">I build things Games, Systems, Bypassings, Scripts</p>
+                <p class="intro-label">✦ HI, I'M 4KRYX ✦</p>
+                <h1 class="main-title">DEVELOPER & CREATOR</h1>
+                <p class="description">I build things: Games, Systems, Bypasses, Scripts<br>
+                <span style="font-size: 0.9rem; opacity: 0.7;">🔧 | 💻 | 🎮 | ⚡</span></p>
             </div>
         </section>
 
         <section id="about" class="section about-section">
             <div class="section-content">
-                <p class="section-label">----// about me WHO I AM</p>
-                <h2>"I'm 4kryx - a developer and creator focused on building things</h2>
-                <p class="detail-text">i spend my time working on Roblox, Vs Code, Github</p>
-                <p class="tools-label">// tools "C++, LUA, JAVASCRIPT, HTML/CSS,"</p>
+                <p class="section-label">▸ about me / who I am</p>
+                <h2>"I'm 4kryx — a developer and creator focused on building things"</h2>
+                <p class="detail-text">I spend my time working on Roblox, VS Code, GitHub, crafting experiences and tools that push boundaries.</p>
+                <p class="tools-label">⚙️ // tools: <strong>C++, LUA, JAVASCRIPT, HTML/CSS, Python</strong></p>
             </div>
         </section>
 
         <section id="projects" class="section projects-section">
             <div class="section-content">
-                <p class="section-label">----// PROJECTS</p>
-                <p class="detail-text">Aquí encontrarás proyectos en desarrollo y ejemplos de mi trabajo.</p>
+                <p class="section-label">▸ featured work</p>
+                <div class="projects-grid">
+                    <div class="project-card">
+                        <h3>🎮 Roblox Scripting Engine</h3>
+                        <p>Advanced scripting framework for game mechanics and anti-cheat systems.</p>
+                        <span class="project-status">● In Development</span>
+                    </div>
+                    <div class="project-card">
+                        <h3>🔧 Dev Toolkit</h3>
+                        <p>Collection of utilities for VS Code and workflow automation.</p>
+                        <span class="project-status">● Beta Soon</span>
+                    </div>
+                    <div class="project-card">
+                        <h3>⚡ Performance Tools</h3>
+                        <p>Lightweight scripts and bypass techniques for optimized execution.</p>
+                        <span class="project-status">● Researching</span>
+                    </div>
+                </div>
+                <p class="detail-text" style="margin-top: 2rem; text-align: center; font-size: 0.9rem;">Más proyectos en desarrollo — sígueme para actualizaciones.</p>
             </div>
         </section>
     </main>
+
+    <footer class="footer">
+        <p>4KRYX © 2026 — Developer & Creator</p>
+    </footer>
 
     <script src="script.js"></script>
 </body>
