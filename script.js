@@ -64,10 +64,11 @@
         }
     }
     
-    // Animación de números
+    // Animación de números (colaboradores y visits)
     function animateNumbers() {
-        const stats = document.querySelectorAll('.stat-number-project');
-        stats.forEach(stat => {
+        // Colaboradores
+        const collaborators = document.querySelectorAll('.stat-number-project');
+        collaborators.forEach(stat => {
             const target = parseInt(stat.dataset.target);
             let current = 0;
             const increment = target / 50;
@@ -90,23 +91,44 @@
             }, { threshold: 0.5 });
             observer.observe(stat);
         });
-    }
-    
-    // Rotating text
-    function setupRotatingText() {
-        const words = ['Games', 'Systems', 'Bypasses', 'Scripts'];
-        let index = 0;
-        const rotatingElement = document.querySelector('.rotating-text');
-        if (rotatingElement) {
-            setInterval(() => {
-                index = (index + 1) % words.length;
-                rotatingElement.style.opacity = '0';
-                setTimeout(() => {
-                    rotatingElement.textContent = words[index];
-                    rotatingElement.style.opacity = '1';
-                }, 300);
-            }, 2000);
-        }
+        
+        // Visits
+        const visits = document.querySelectorAll('.stat-visits');
+        visits.forEach(stat => {
+            const target = parseInt(stat.dataset.target);
+            let current = 0;
+            const increment = target / 50;
+            const updateNumber = () => {
+                if (current < target) {
+                    current += increment;
+                    if (target >= 1000000) {
+                        stat.textContent = (current / 1000000).toFixed(1) + 'M';
+                    } else if (target >= 1000) {
+                        stat.textContent = (current / 1000).toFixed(0) + 'k';
+                    } else {
+                        stat.textContent = Math.floor(current);
+                    }
+                    requestAnimationFrame(updateNumber);
+                } else {
+                    if (target >= 1000000) {
+                        stat.textContent = (target / 1000000).toFixed(1) + 'M';
+                    } else if (target >= 1000) {
+                        stat.textContent = (target / 1000).toFixed(0) + 'k';
+                    } else {
+                        stat.textContent = target;
+                    }
+                }
+            };
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        updateNumber();
+                        observer.unobserve(entry.target);
+                    }
+                });
+            }, { threshold: 0.5 });
+            observer.observe(stat);
+        });
     }
     
     window.addEventListener('scroll', () => {
@@ -118,6 +140,5 @@
         updateActiveSectionOnScroll();
         handleNavbarScroll();
         animateNumbers();
-        setupRotatingText();
     });
 })();
