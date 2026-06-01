@@ -75,7 +75,7 @@ body {
 .particle:nth-child(9) { width: 6px; height: 6px; left: 80%; animation-duration: 17s; animation-delay: 8s; }
 .particle:nth-child(10) { width: 8px; height: 8px; left: 45%; animation-duration: 19s; animation-delay: 2s; }
 
-/* NAVBAR */
+/* NAVBAR - SIN EMOJIS */
 .topbar {
     position: fixed;
     top: 0;
@@ -101,8 +101,8 @@ body {
 }
 
 .nav-buttons button {
-    border: 1px solid rgba(0, 195, 255, 0.3);
-    background: rgba(0, 195, 255, 0.1);
+    border: none;
+    background: transparent;
     color: var(--text);
     padding: 0.6rem 1.5rem;
     cursor: pointer;
@@ -114,14 +114,13 @@ body {
 }
 
 .nav-buttons button:hover {
-    border-color: var(--primary);
+    color: var(--primary);
     transform: translateY(-2px);
-    box-shadow: 0 5px 20px rgba(0, 195, 255, 0.3);
 }
 
 .nav-buttons button.active {
-    border-color: var(--primary);
-    background: rgba(0, 195, 255, 0.2);
+    color: var(--primary);
+    background: rgba(0, 195, 255, 0.1);
 }
 
 /* HOME SECTION */
@@ -164,6 +163,7 @@ body {
     font-family: 'Orbitron', monospace;
 }
 
+/* TEXTO AZUL COMPLETO */
 .typing-text-full {
     display: inline-block;
     overflow: hidden;
@@ -171,6 +171,7 @@ body {
     white-space: nowrap;
     animation: typingFull 3s steps(22, end) forwards, blink-caret 0.75s step-end infinite;
     width: 0;
+    color: var(--primary);
 }
 
 @keyframes typingFull {
@@ -188,34 +189,15 @@ body {
     color: #ccc;
 }
 
-.rotating-text {
+.fixed-text {
     color: var(--primary);
     font-weight: bold;
-    display: inline-block;
-    animation: rotateWords 8s infinite;
 }
 
-@keyframes rotateWords {
-    0%, 20% { content: "Games"; opacity: 1; }
-    25%, 45% { content: "Systems"; opacity: 1; }
-    50%, 70% { content: "Bypasses"; opacity: 1; }
-    75%, 95% { content: "Scripts"; opacity: 1; }
-}
-
-.cursor {
-    animation: blink 1s infinite;
-    margin-left: 2px;
-}
-
-@keyframes blink {
-    0%, 100% { opacity: 1; }
-    50% { opacity: 0; }
-}
-
-/* SOCIAL LINKS */
+/* SOCIAL LINKS CON TIKTOK */
 .social-links {
     display: flex;
-    gap: 1.5rem;
+    gap: 1rem;
     justify-content: center;
     margin: 2rem 0;
     flex-wrap: wrap;
@@ -238,6 +220,10 @@ body {
     transform: translateY(-3px);
     border-color: var(--primary);
     background: rgba(0, 195, 255, 0.2);
+}
+
+.social-link.tiktok:hover i {
+    color: #ff004f;
 }
 
 /* CTA BUTTON */
@@ -263,7 +249,7 @@ body {
     gap: 15px;
 }
 
-/* ABOUT SECTION - CON IMAGEN A LA DERECHA */
+/* ABOUT SECTION */
 .about-section {
     background: rgba(0, 0, 0, 0.6);
     backdrop-filter: blur(10px);
@@ -363,17 +349,18 @@ body {
 }
 
 .section-content {
-    max-width: 1200px;
+    max-width: 1300px;
     width: 100%;
 }
 
 .projects-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
     gap: 1.5rem;
     margin-top: 2rem;
 }
 
+/* CARDS */
 .project-card {
     background: rgba(255, 255, 255, 0.05);
     border: 1px solid rgba(255, 255, 255, 0.1);
@@ -444,12 +431,6 @@ body {
     font-family: 'Orbitron', monospace;
 }
 
-.ex-dev {
-    font-size: 0.7rem;
-    color: var(--text-muted);
-    font-weight: normal;
-}
-
 .project-desc {
     font-size: 0.8rem;
     color: var(--text-muted);
@@ -457,6 +438,7 @@ body {
     margin-bottom: 1rem;
 }
 
+/* ESTADÍSTICAS CON 3 ÍCONOS */
 .project-stats {
     display: flex;
     flex-wrap: wrap;
@@ -475,43 +457,15 @@ body {
 
 .stat-item i {
     color: var(--primary);
+    width: 18px;
 }
 
-.stat-number-project {
+.stat-number-project, .stat-visits {
     font-weight: 700;
     color: var(--primary);
 }
 
-.offline-tag {
-    background: rgba(255, 68, 68, 0.2);
-    padding: 0.2rem 0.5rem;
-    border-radius: 50px;
-    font-size: 0.65rem;
-    color: var(--error);
-    margin-left: 0.5rem;
-}
-
-.offline-overlay {
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    background: linear-gradient(90deg, rgba(30,30,40,0.95), rgba(20,20,30,0.95));
-    padding: 0.4rem;
-    text-align: center;
-    font-size: 0.7rem;
-    transform: translateY(100%);
-    transition: var(--transition);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 0.5rem;
-}
-
-.project-card.offline-project:hover .offline-overlay {
-    transform: translateY(0);
-}
-
+/* EFECTO HOVER SIN OVERLAY */
 .project-hover-effect {
     position: absolute;
     top: 0;
@@ -577,5 +531,14 @@ body {
     
     .projects-grid {
         grid-template-columns: 1fr;
+    }
+    
+    .social-links {
+        gap: 0.5rem;
+    }
+    
+    .social-link {
+        padding: 0.4rem 0.8rem;
+        font-size: 0.75rem;
     }
 }
