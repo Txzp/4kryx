@@ -3,34 +3,99 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>4KRYX | Developer & Creator</title>
+    <title>4KRYX | Developer & Creator | Next Level</title>
     <link rel="stylesheet" href="styles.css">
+    <!-- Google Fonts: Fuentes épicas -->
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700;800;900&family=Space+Grotesk:wght@300;400;500;600;700&family=Rajdhani:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Font Awesome para iconos -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 </head>
 <body>
+
+    <!-- Video de YouTube como fondo -->
+    <div class="video-background">
+        <div class="video-overlay"></div>
+        <iframe 
+            src="https://www.youtube.com/embed/2N6yfWkHqfA?autoplay=1&mute=1&loop=1&playlist=2N6yfWkHqfA&controls=0&showinfo=0&rel=0&modestbranding=1&iv_load_policy=3&disablekb=1&fs=0&playsinline=1&start=0&vq=hd1080" 
+            frameborder="0"
+            allow="autoplay; encrypted-media"
+            allowfullscreen>
+        </iframe>
+    </div>
+
+    <!-- Partículas flotantes (CSS puras) -->
+    <div class="particles">
+        <div class="particle"></div>
+        <div class="particle"></div>
+        <div class="particle"></div>
+        <div class="particle"></div>
+        <div class="particle"></div>
+        <div class="particle"></div>
+        <div class="particle"></div>
+        <div class="particle"></div>
+        <div class="particle"></div>
+        <div class="particle"></div>
+    </div>
+
     <header class="topbar" id="topbar">
         <nav class="nav-buttons">
-            <button data-target="home" class="active">Home</button>
-            <button data-target="about">About</button>
-            <button data-target="projects">Projects</button>
+            <button data-target="home" class="active">🏠 Home</button>
+            <button data-target="about">👤 About</button>
+            <button data-target="projects">🚀 Projects</button>
+            <button data-target="contact">📧 Contact</button>
         </nav>
     </header>
 
     <main>
         <section id="home" class="section home-section">
             <div class="home-content">
-                <p class="intro-label">✦ HI, I'M 4KRYX ✦</p>
-                <h1 class="main-title">DEVELOPER & CREATOR</h1>
-                <p class="description">I build things: Games, Systems, Bypasses, Scripts<br>
-                <span style="font-size: 0.9rem; opacity: 0.7;">🔧 | 💻 | 🎮 | ⚡</span></p>
+                <div class="glitch-wrapper">
+                    <p class="intro-label glitch-text" data-text="✦ 4KRYX ✦">✦ 4KRYX ✦</p>
+                </div>
+                <h1 class="main-title">
+                    <span class="typing-text">DEVELOPER & CREATOR</span>
+                </h1>
+                <p class="description">I build things: <span class="rotating-text">Games</span><span class="cursor">|</span></p>
+                <div class="social-icons">
+                    <a href="#" class="social-icon"><i class="fab fa-github"></i></a>
+                    <a href="#" class="social-icon"><i class="fab fa-twitter"></i></a>
+                    <a href="#" class="social-icon"><i class="fab fa-discord"></i></a>
+                    <a href="#" class="social-icon"><i class="fab fa-youtube"></i></a>
+                </div>
+                <button class="cta-button" id="exploreBtn">
+                    <span>EXPLORE MY WORK</span>
+                    <i class="fas fa-arrow-down"></i>
+                </button>
             </div>
         </section>
 
         <section id="about" class="section about-section">
             <div class="section-content">
                 <p class="section-label">▸ about me / who I am</p>
-                <h2>"I'm 4kryx — a developer and creator focused on building things"</h2>
-                <p class="detail-text">I spend my time working on Roblox, VS Code, GitHub, crafting experiences and tools that push boundaries.</p>
-                <p class="tools-label">⚙️ // tools: <strong>C++, LUA, JAVASCRIPT, HTML/CSS, Python</strong></p>
+                <h2 class="fade-in">"I'm <span class="highlight">4kryx</span> — a developer and creator focused on building <span class="highlight">extraordinary things</span>"</h2>
+                <p class="detail-text fade-in delay-1">I spend my time working on Roblox, VS Code, GitHub, crafting experiences and tools that push boundaries. Passionate about innovation and clean code.</p>
+                <div class="skills-container fade-in delay-2">
+                    <div class="skill-tag">C++</div>
+                    <div class="skill-tag">LUA</div>
+                    <div class="skill-tag">JavaScript</div>
+                    <div class="skill-tag">Python</div>
+                    <div class="skill-tag">HTML/CSS</div>
+                    <div class="skill-tag">React</div>
+                </div>
+                <div class="stats-container">
+                    <div class="stat">
+                        <span class="stat-number" data-target="150">0</span>
+                        <span class="stat-label">+ Projects</span>
+                    </div>
+                    <div class="stat">
+                        <span class="stat-number" data-target="4">0</span>
+                        <span class="stat-label">Years Experience</span>
+                    </div>
+                    <div class="stat">
+                        <span class="stat-number" data-target="25">0</span>
+                        <span class="stat-label">Happy Clients</span>
+                    </div>
+                </div>
             </div>
         </section>
 
@@ -39,28 +104,67 @@
                 <p class="section-label">▸ featured work</p>
                 <div class="projects-grid">
                     <div class="project-card">
-                        <h3>🎮 Roblox Scripting Engine</h3>
-                        <p>Advanced scripting framework for game mechanics and anti-cheat systems.</p>
+                        <div class="project-icon"><i class="fas fa-gamepad"></i></div>
+                        <h3>Roblox Scripting Engine</h3>
+                        <p>Advanced scripting framework for game mechanics and anti-cheat systems with real-time optimization.</p>
                         <span class="project-status">● In Development</span>
+                        <div class="project-hover-effect"></div>
                     </div>
                     <div class="project-card">
-                        <h3>🔧 Dev Toolkit</h3>
-                        <p>Collection of utilities for VS Code and workflow automation.</p>
+                        <div class="project-icon"><i class="fas fa-code"></i></div>
+                        <h3>Dev Toolkit Pro</h3>
+                        <p>Professional collection of utilities for VS Code, workflow automation, and productivity boosters.</p>
                         <span class="project-status">● Beta Soon</span>
+                        <div class="project-hover-effect"></div>
                     </div>
                     <div class="project-card">
-                        <h3>⚡ Performance Tools</h3>
-                        <p>Lightweight scripts and bypass techniques for optimized execution.</p>
+                        <div class="project-icon"><i class="fas fa-bolt"></i></div>
+                        <h3>Performance Suite</h3>
+                        <p>Lightweight scripts and optimization techniques for maximum execution speed and efficiency.</p>
                         <span class="project-status">● Researching</span>
+                        <div class="project-hover-effect"></div>
+                    </div>
+                    <div class="project-card">
+                        <div class="project-icon"><i class="fas fa-shield-alt"></i></div>
+                        <h3>Security Framework</h3>
+                        <p>Advanced security protocols and bypass detection systems for robust application protection.</p>
+                        <span class="project-status">● Planning</span>
+                        <div class="project-hover-effect"></div>
                     </div>
                 </div>
-                <p class="detail-text" style="margin-top: 2rem; text-align: center; font-size: 0.9rem;">Más proyectos en desarrollo — sígueme para actualizaciones.</p>
+            </div>
+        </section>
+
+        <section id="contact" class="section contact-section">
+            <div class="section-content">
+                <p class="section-label">▸ get in touch</p>
+                <h2 class="fade-in">Let's work <span class="highlight">together</span></h2>
+                <div class="contact-container">
+                    <form id="contactForm" class="contact-form">
+                        <div class="form-group">
+                            <input type="text" id="name" placeholder="Your name" required>
+                            <div class="input-border"></div>
+                        </div>
+                        <div class="form-group">
+                            <input type="email" id="email" placeholder="Your email" required>
+                            <div class="input-border"></div>
+                        </div>
+                        <div class="form-group">
+                            <textarea id="message" rows="4" placeholder="Your message" required></textarea>
+                            <div class="input-border"></div>
+                        </div>
+                        <button type="submit" class="submit-btn">
+                            <span>Send Message</span>
+                            <i class="fas fa-paper-plane"></i>
+                        </button>
+                    </form>
+                </div>
             </div>
         </section>
     </main>
 
     <footer class="footer">
-        <p>4KRYX © 2026 — Developer & Creator</p>
+        <p>4KRYX © 2026 — Developer & Creator | <i class="fas fa-code"></i> Built with passion</p>
     </footer>
 
     <script src="script.js"></script>
