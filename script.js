@@ -1,26 +1,31 @@
 (function() {
-    const buttons = document.querySelectorAll('.nav-buttons button');
+    const navButtons = document.querySelectorAll('.nav-buttons button[data-target]');
     const sections = document.querySelectorAll('.section');
     const topbar = document.getElementById('topbar');
     const exploreBtn = document.getElementById('exploreBtn');
-    
-    const rotatingWords = ['Scripts', 'Bypasses', 'Systems', 'Games'];
+
+    let currentLang = 'es';
+
+    const rotatingWordsMap = {
+        en: ['Scripts', 'Bypasses', 'Systems', 'Games'],
+        es: ['Scripts', 'Bypasses', 'Sistemas', 'Juegos']
+    };
     let wordIndex = 0;
     const rotatingElement = document.querySelector('.rotating-text');
-    
+
     if (rotatingElement) {
         setInterval(() => {
-            wordIndex = (wordIndex + 1) % rotatingWords.length;
+            wordIndex = (wordIndex + 1) % rotatingWordsMap[currentLang].length;
             rotatingElement.style.opacity = '0';
             setTimeout(() => {
-                rotatingElement.textContent = rotatingWords[wordIndex];
+                rotatingElement.textContent = rotatingWordsMap[currentLang][wordIndex];
                 rotatingElement.style.opacity = '1';
             }, 300);
         }, 2000);
     }
-    
+
     function setActiveButton(targetId) {
-        buttons.forEach(btn => {
+        navButtons.forEach(btn => {
             if (btn.dataset.target === targetId) {
                 btn.classList.add('active');
             } else {
@@ -28,28 +33,26 @@
             }
         });
     }
-    
+
     function smoothScrollTo(element) {
         const offset = 80;
         const elementPosition = element.getBoundingClientRect().top;
         const offsetPosition = elementPosition + window.pageYOffset - offset;
         window.scrollTo({ top: offsetPosition, behavior: 'smooth' });
     }
-    
-    buttons.forEach(button => {
-        if (button.dataset.target) {
-            button.addEventListener('click', () => {
-                const targetId = button.dataset.target;
-                const targetSection = document.getElementById(targetId);
-                if (targetSection) {
-                    setActiveButton(targetId);
-                    smoothScrollTo(targetSection);
-                    history.pushState(null, '', `#${targetId}`);
-                }
-            });
-        }
+
+    navButtons.forEach(button => {
+        button.addEventListener('click', () => {
+            const targetId = button.dataset.target;
+            const targetSection = document.getElementById(targetId);
+            if (targetSection) {
+                setActiveButton(targetId);
+                smoothScrollTo(targetSection);
+                history.pushState(null, '', `#${targetId}`);
+            }
+        });
     });
-    
+
     if (exploreBtn) {
         exploreBtn.addEventListener('click', () => {
             const projectsSection = document.getElementById('projects');
@@ -59,7 +62,7 @@
             }
         });
     }
-    
+
     function updateActiveSectionOnScroll() {
         const scrollPosition = window.scrollY + 120;
         let currentSection = 'home';
@@ -72,7 +75,7 @@
         });
         setActiveButton(currentSection);
     }
-    
+
     function handleNavbarScroll() {
         if (window.scrollY > 50) {
             topbar.classList.add('scrolled');
@@ -80,7 +83,7 @@
             topbar.classList.remove('scrolled');
         }
     }
-    
+
     function animateNumbers() {
         const collaborators = document.querySelectorAll('.stat-number-project');
         collaborators.forEach(stat => {
@@ -106,7 +109,7 @@
             }, { threshold: 0.5 });
             observer.observe(stat);
         });
-        
+
         const visits = document.querySelectorAll('.stat-visits');
         visits.forEach(stat => {
             const target = parseInt(stat.dataset.target);
@@ -144,40 +147,84 @@
             observer.observe(stat);
         });
     }
-    
+
     function changeLanguage(lang) {
-        if (lang === 'en') {
-            document.getElementById('about').querySelector('.section-label').textContent = '▸ about me / who I am';
-            document.getElementById('about').querySelector('h2').innerHTML = '"I\'m <span class="highlight">4kryx</span> — a developer and creator focused on building <span class="highlight">extraordinary things</span>"';
-            document.getElementById('about').querySelector('.detail-text').textContent = 'I spend my time working on Roblox, VS Code, GitHub, crafting experiences and tools that push boundaries. Passionate about innovation and clean code.';
-            document.getElementById('projects').querySelector('.section-label').textContent = '▸ featured work';
-            document.querySelector('.footer p').innerHTML = '4KRYX © 2025 — Developer & Creator | Built with passion | Made in Vs code to Vercel app';
-        } else if (lang === 'es') {
-            document.getElementById('about').querySelector('.section-label').textContent = '▸ sobre mí / quién soy';
-            document.getElementById('about').querySelector('h2').innerHTML = '"Soy <span class="highlight">4kryx</span> — un desarrollador y creador enfocado en construir <span class="highlight">cosas extraordinarias</span>"';
-            document.getElementById('about').querySelector('.detail-text').textContent = 'Paso mi tiempo trabajando en Roblox, VS Code, GitHub, creando experiencias y herramientas que superan límites. Apasionado por la innovación y el código limpio.';
-            document.getElementById('projects').querySelector('.section-label').textContent = '▸ trabajos destacados';
-            document.querySelector('.footer p').innerHTML = '4KRYX © 2025 — Desarrollador & Creador | Hecho con pasión | Hecho en Vs code a Vercel app';
+        currentLang = lang;
+
+        document.querySelectorAll('[data-en][data-es]').forEach(el => {
+            if (el.tagName === 'INPUT' || el.tagName === 'TEXTAREA') {
+                el.placeholder = el.dataset[lang];
+            } else {
+                el.textContent = el.dataset[lang];
+            }
+        });
+
+        if (rotatingElement) {
+            wordIndex = 0;
+            rotatingElement.textContent = rotatingWordsMap[lang][0];
         }
+
+        const langFlag = document.getElementById('langFlag');
+        const langLabel = document.getElementById('langLabel');
+        const checkEn = document.getElementById('check-en');
+        const checkEs = document.getElementById('check-es');
+        const optEn = document.getElementById('opt-en');
+        const optEs = document.getElementById('opt-es');
+
+        if (lang === 'en') {
+            langFlag.textContent = '🇬🇧';
+            langLabel.textContent = 'English';
+            checkEn.innerHTML = '<i class="fas fa-check"></i>';
+            checkEs.innerHTML = '';
+            optEn.classList.add('active-lang');
+            optEs.classList.remove('active-lang');
+            document.documentElement.lang = 'en';
+        } else {
+            langFlag.textContent = '🇪🇸';
+            langLabel.textContent = 'Español';
+            checkEn.innerHTML = '';
+            checkEs.innerHTML = '<i class="fas fa-check"></i>';
+            optEn.classList.remove('active-lang');
+            optEs.classList.add('active-lang');
+            document.documentElement.lang = 'es';
+        }
+
+        const dropdown = document.getElementById('langDropdown');
+        dropdown.classList.remove('open');
     }
-    
-    const langButtons = document.querySelectorAll('.dropdown-content a');
-    langButtons.forEach(btn => {
+
+    const langBtn = document.getElementById('langBtn');
+    const langDropdown = document.getElementById('langDropdown');
+
+    langBtn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        langDropdown.classList.toggle('open');
+    });
+
+    document.addEventListener('click', () => {
+        langDropdown.classList.remove('open');
+    });
+
+    langDropdown.addEventListener('click', (e) => {
+        e.stopPropagation();
+    });
+
+    document.querySelectorAll('.lang-option').forEach(btn => {
         btn.addEventListener('click', (e) => {
             e.preventDefault();
-            const lang = btn.dataset.lang;
-            changeLanguage(lang);
+            changeLanguage(btn.dataset.lang);
         });
     });
-    
+
     window.addEventListener('scroll', () => {
         updateActiveSectionOnScroll();
         handleNavbarScroll();
     });
-    
+
     window.addEventListener('load', () => {
         updateActiveSectionOnScroll();
         handleNavbarScroll();
         animateNumbers();
+        changeLanguage('es');
     });
 })();
