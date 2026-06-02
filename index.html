@@ -10,34 +10,34 @@
 </head>
 <body>
 
+    <div id="yt-player"></div>
+
     <div class="half-half-background"></div>
-    
+
     <div class="particles">
+        <div class="particle"></div><div class="particle"></div><div class="particle"></div>
+        <div class="particle"></div><div class="particle"></div><div class="particle"></div>
+        <div class="particle"></div><div class="particle"></div><div class="particle"></div>
+        <div class="particle"></div><div class="particle"></div><div class="particle"></div>
+        <div class="particle"></div><div class="particle"></div><div class="particle"></div>
+        <div class="particle"></div><div class="particle"></div><div class="particle"></div>
+        <div class="particle"></div><div class="particle"></div><div class="particle"></div>
+        <div class="particle"></div><div class="particle"></div><div class="particle"></div>
         <div class="particle"></div>
-        <div class="particle"></div>
-        <div class="particle"></div>
-        <div class="particle"></div>
-        <div class="particle"></div>
-        <div class="particle"></div>
-        <div class="particle"></div>
-        <div class="particle"></div>
-        <div class="particle"></div>
-        <div class="particle"></div>
-        <div class="particle"></div>
-        <div class="particle"></div>
-        <div class="particle"></div>
-        <div class="particle"></div>
-        <div class="particle"></div>
-        <div class="particle"></div>
-        <div class="particle"></div>
-        <div class="particle"></div>
-        <div class="particle"></div>
-        <div class="particle"></div>
-        <div class="particle"></div>
-        <div class="particle"></div>
-        <div class="particle"></div>
-        <div class="particle"></div>
-        <div class="particle"></div>
+    </div>
+
+    <!-- Music controls -->
+    <div class="music-widget" id="musicWidget">
+        <div class="volume-panel" id="volumePanel">
+            <i class="fas fa-volume-down vol-icon-min"></i>
+            <input type="range" id="volumeSlider" min="0" max="100" value="18" class="volume-slider">
+            <i class="fas fa-volume-up vol-icon-max"></i>
+        </div>
+        <button class="music-btn" id="musicBtn" title="Toggle music">
+            <span class="music-bars">
+                <span></span><span></span><span></span><span></span>
+            </span>
+        </button>
     </div>
 
     <header class="topbar" id="topbar">
@@ -47,20 +47,20 @@
             <button data-target="projects" data-en="Projects" data-es="Proyectos">Proyectos</button>
             <div class="dropdown">
                 <button class="dropbtn" id="langBtn">
-                    <span class="lang-flag" id="langFlag">🇪🇸</span>
-                    <span id="langLabel">Español</span>
+                    <span class="lang-dot" id="langDot"></span>
+                    <span id="langLabel">Spanish</span>
                     <i class="fas fa-chevron-down lang-arrow"></i>
                 </button>
                 <div class="dropdown-content" id="langDropdown">
                     <a href="#" data-lang="en" class="lang-option" id="opt-en">
-                        <span class="lang-check" id="check-en"></span>
-                        <span>🇬🇧</span>
+                        <span class="lang-dot-opt dot-en"></span>
                         <span>English</span>
+                        <span class="lang-check" id="check-en"></span>
                     </a>
                     <a href="#" data-lang="es" class="lang-option active-lang" id="opt-es">
+                        <span class="lang-dot-opt dot-es"></span>
+                        <span>Spanish</span>
                         <span class="lang-check" id="check-es"><i class="fas fa-check"></i></span>
-                        <span>🇪🇸</span>
-                        <span>Español</span>
                     </a>
                 </div>
             </div>
@@ -69,7 +69,7 @@
 
     <main>
         <section id="home" class="section home-section">
-            <div class="home-content">
+            <div class="section-animate home-content">
                 <p class="intro-label glitch-text" data-text="✦ 4KRYX ✦">✦ 4KRYX ✦</p>
                 <h1 class="main-title">
                     <span class="typing-text-full">DEVELOPER & CREATOR</span>
@@ -78,26 +78,12 @@
                     <span data-en="I build things:" data-es="Construyo cosas:">Construyo cosas:</span>
                     <span class="rotating-text">Scripts</span><span class="cursor">|</span>
                 </p>
-                
                 <div class="social-links">
-                    <a href="#" class="social-link discord">
-                        <i class="fab fa-discord"></i>
-                        <span>4kryx</span>
-                    </a>
-                    <a href="https://www.roblox.com/es/users/8677588088/profile" target="_blank" class="social-link roblox">
-                        <i class="fab fa-roblox"></i>
-                        <span>Roblox</span>
-                    </a>
-                    <a href="https://guns.lol/fxhtz" target="_blank" class="social-link guns">
-                        <i class="fas fa-crosshairs"></i>
-                        <span>guns.lol</span>
-                    </a>
-                    <a href="https://www.tiktok.com/@4kryx" target="_blank" class="social-link tiktok">
-                        <i class="fab fa-tiktok"></i>
-                        <span>TikTok</span>
-                    </a>
+                    <a href="#" class="social-link discord"><i class="fab fa-discord"></i><span>4kryx</span></a>
+                    <a href="https://www.roblox.com/es/users/8677588088/profile" target="_blank" class="social-link roblox"><i class="fab fa-roblox"></i><span>Roblox</span></a>
+                    <a href="https://guns.lol/fxhtz" target="_blank" class="social-link guns"><i class="fas fa-crosshairs"></i><span>guns.lol</span></a>
+                    <a href="https://www.tiktok.com/@4kryx" target="_blank" class="social-link tiktok"><i class="fab fa-tiktok"></i><span>TikTok</span></a>
                 </div>
-                
                 <button class="cta-button" id="exploreBtn">
                     <span data-en="EXPLORE MY WORK" data-es="EXPLORAR MI TRABAJO">EXPLORAR MI TRABAJO</span>
                     <i class="fas fa-arrow-down"></i>
@@ -106,147 +92,128 @@
         </section>
 
         <section id="about" class="section about-section">
-            <div class="about-container">
+            <div class="section-animate about-container">
                 <div class="about-text">
                     <p class="section-label" data-en="▸ about me / who I am" data-es="▸ sobre mí / quién soy">▸ sobre mí / quién soy</p>
-                    <h2 class="fade-in">
-                        <span data-en='"I\'m' data-es='"Soy'>"Soy</span>
-                        <span class="highlight">4kryx</span>
-                        <span data-en="— a developer and creator focused on building" data-es="— un desarrollador y creador enfocado en construir">— un desarrollador y creador enfocado en construir</span>
-                        <span class="highlight" data-en="extraordinary things" data-es="cosas extraordinarias">cosas extraordinarias</span>"
-                    </h2>
-                    <p class="detail-text fade-in delay-1" data-en="I spend my time working on Roblox, VS Code, GitHub, crafting experiences and tools that push boundaries. Passionate about innovation and clean code." data-es="Paso mi tiempo trabajando en Roblox, VS Code, GitHub, creando experiencias y herramientas que superan límites. Apasionado por la innovación y el código limpio.">Paso mi tiempo trabajando en Roblox, VS Code, GitHub, creando experiencias y herramientas que superan límites. Apasionado por la innovación y el código limpio.</p>
-                    <div class="skills-container fade-in delay-2">
+
+                    <!-- Typing-animated quote -->
+                    <h2 class="typed-quote" id="typedQuote" aria-live="polite"></h2>
+
+                    <p class="detail-text" id="detailText"
+                        data-en="I spend my time working on Roblox, VS Code, GitHub, crafting experiences and tools that push boundaries. Passionate about innovation and clean code."
+                        data-es="Paso mi tiempo trabajando en Roblox, VS Code, GitHub, creando experiencias y herramientas que superan límites. Apasionado por la innovación y el código limpio.">
+                    </p>
+
+                    <div class="skills-divider">
+                        <span class="skills-divider-label" data-en="SKILLS" data-es="HABILIDADES">HABILIDADES</span>
+                    </div>
+                    <div class="skills-container">
                         <div class="skill-tag">C++</div>
                         <div class="skill-tag">LUA</div>
                         <div class="skill-tag">JavaScript</div>
                         <div class="skill-tag">HTML/CSS</div>
                     </div>
+
+                    <!-- Favorite Apps -->
+                    <div class="apps-divider">
+                        <span class="apps-divider-label" data-en="MY FAVORITE APPS" data-es="MIS APPS FAVORITAS">MIS APPS FAVORITAS</span>
+                    </div>
+                    <div class="apps-list">
+                        <div class="app-item">
+                            <span class="app-name">VS Code</span>
+                            <span class="app-years">2 years</span>
+                        </div>
+                        <div class="app-item">
+                            <span class="app-name">GitHub</span>
+                            <span class="app-years">1 year</span>
+                        </div>
+                        <div class="app-item">
+                            <span class="app-name">Roblox Studio</span>
+                            <span class="app-years">4 years</span>
+                        </div>
+                    </div>
                 </div>
+
                 <div class="about-image">
-                    <div class="image-frame">
-                        <img src="https://i.pinimg.com/736x/36/09/3a/36093afd7e2a447c0ee6e34468be4582.jpg" alt="4kryx">
-                        <div class="image-glow"></div>
+                    <div class="image-frame" id="imageFrame">
+                        <img src="https://i.pinimg.com/736x/7a/e1/65/7ae1654e20ab87fe49c6827c8192dfbf.jpg" alt="4kryx" id="profileImg">
                     </div>
                 </div>
             </div>
         </section>
 
         <section id="projects" class="section projects-section">
-            <div class="section-content">
+            <div class="section-animate section-content">
                 <p class="section-label" data-en="▸ featured work" data-es="▸ trabajos destacados">▸ trabajos destacados</p>
                 <div class="projects-grid">
-                    
-                    <div class="project-card active-project">
-                        <div class="project-header">
-                            <div class="project-icon"><i class="fas fa-code"></i></div>
-                            <div class="status-badge active">
-                                <span class="status-dot"></span>
-                                <span data-en="ACTIVE" data-es="ACTIVO">ACTIVO</span>
+
+                    <div class="project-card-wrapper">
+                        <div class="project-card active-project">
+                            <div class="project-header">
+                                <div class="project-icon"><i class="fas fa-code"></i></div>
+                                <div class="status-badge active"><span class="status-dot"></span><span data-en="ACTIVE" data-es="ACTIVO">ACTIVO</span></div>
                             </div>
+                            <h3>VS Code | Kryhub</h3>
+                            <p class="project-desc" data-en="HUB MODIFICATION PROJECT WINDUI USED FOR SCRIPTS AND ADVANCED SCRIPTS FOR GAME EXPLOITS" data-es="PROYECTO DE MODIFICACION DE HUB WINDUI SE USA PARA SCRIPTS Y SCRIPTS AVANZADOS PARA JUEGOS EXPLOITS">PROYECTO DE MODIFICACION DE HUB WINDUI SE USA PARA SCRIPTS Y SCRIPTS AVANZADOS PARA JUEGOS EXPLOITS</p>
+                            <div class="project-stats">
+                                <div class="stat-item"><i class="fas fa-users"></i><span class="stat-number-project" data-target="1">0</span><span data-en="collaborators" data-es="colaboradores">colaboradores</span></div>
+                                <div class="stat-item"><i class="fas fa-crown"></i><span>Owner: 4kryx</span></div>
+                            </div>
+                            <div class="project-hover-effect"></div>
                         </div>
-                        <h3>VS Code | Kryhub</h3>
-                        <p class="project-desc" data-en="HUB MODIFICATION PROJECT WINDUI USED FOR SCRIPTS AND ADVANCED SCRIPTS FOR GAME EXPLOITS" data-es="PROYECTO DE MODIFICACION DE HUB WINDUI SE USA PARA SCRIPTS Y SCRIPTS AVANZADOS PARA JUEGOS EXPLOITS">PROYECTO DE MODIFICACION DE HUB WINDUI SE USA PARA SCRIPTS Y SCRIPTS AVANZADOS PARA JUEGOS EXPLOITS</p>
-                        <div class="project-stats">
-                            <div class="stat-item">
-                                <i class="fas fa-users"></i>
-                                <span class="stat-number-project" data-target="1">0</span>
-                                <span data-en="collaborators" data-es="colaboradores">colaboradores</span>
-                            </div>
-                            <div class="stat-item">
-                                <i class="fas fa-crown"></i>
-                                <span>Owner: 4kryx</span>
-                            </div>
-                        </div>
-                        <div class="project-hover-effect"></div>
                     </div>
 
-                    <div class="project-card offline-project">
-                        <div class="project-header">
-                            <div class="project-icon"><i class="fas fa-skull"></i></div>
-                            <div class="status-badge offline">
-                                <span class="status-dot"></span>
-                                <span data-en="OFFLINE" data-es="OFFLINE">OFFLINE</span>
+                    <div class="project-card-wrapper">
+                        <div class="project-card offline-project">
+                            <div class="project-header">
+                                <div class="project-icon"><i class="fab fa-roblox"></i></div>
+                                <div class="status-badge retired"><span class="status-dot"></span><span data-en="RETIRED" data-es="RETIRADO">RETIRADO</span></div>
                             </div>
+                            <h3>Steal a Latam</h3>
+                            <p class="project-desc" data-en="LARGE ROBLOX PROJECT" data-es="PROYECTO GRANDE DE ROBLOX">PROYECTO GRANDE DE ROBLOX</p>
+                            <div class="project-stats">
+                                <div class="stat-item"><i class="fas fa-users"></i><span class="stat-number-project" data-target="8">0</span><span data-en="collaborators" data-es="colaboradores">colaboradores</span></div>
+                                <div class="stat-item"><i class="fas fa-eye"></i><span class="stat-visits" data-target="1100000">0</span><span data-en="visits" data-es="visitas">visitas</span></div>
+                                <div class="stat-item"><i class="fas fa-hammer"></i><span>Builder</span></div>
+                            </div>
+                            <div class="project-hover-effect"></div>
                         </div>
-                        <h3>Steal a Latam</h3>
-                        <p class="project-desc" data-en="LARGE ROBLOX PROJECT" data-es="PROYECTO GRANDE DE ROBLOX">PROYECTO GRANDE DE ROBLOX</p>
-                        <div class="project-stats">
-                            <div class="stat-item">
-                                <i class="fas fa-users"></i>
-                                <span class="stat-number-project" data-target="8">0</span>
-                                <span data-en="collaborators" data-es="colaboradores">colaboradores</span>
-                            </div>
-                            <div class="stat-item">
-                                <i class="fas fa-eye"></i>
-                                <span class="stat-visits" data-target="1100000">0</span>
-                                <span data-en="visits" data-es="visitas">visitas</span>
-                            </div>
-                            <div class="stat-item">
-                                <i class="fas fa-gavel"></i>
-                                <span data-en="Developer" data-es="Desarrollador">Desarrollador</span>
-                            </div>
-                        </div>
-                        <div class="project-hover-effect"></div>
                     </div>
 
-                    <div class="project-card offline-project">
-                        <div class="project-header">
-                            <div class="project-icon"><i class="fas fa-comment-dots"></i></div>
-                            <div class="status-badge offline">
-                                <span class="status-dot"></span>
-                                <span data-en="OFFLINE" data-es="OFFLINE">OFFLINE</span>
+                    <div class="project-card-wrapper">
+                        <div class="project-card offline-project">
+                            <div class="project-header">
+                                <div class="project-icon"><i class="fas fa-comment-dots"></i></div>
+                                <div class="status-badge deleted"><span class="status-dot"></span><span data-en="DELETED" data-es="ELIMINADO">ELIMINADO</span></div>
                             </div>
+                            <h3>Chat sin censura</h3>
+                            <p class="project-desc" data-en="TEAM PROJECT REMOVED BY ROBLOX" data-es="PROYECTO EN EQUIPO ELIMINADO POR ROBLOX">PROYECTO EN EQUIPO ELIMINADO POR ROBLOX</p>
+                            <div class="project-stats">
+                                <div class="stat-item"><i class="fas fa-users"></i><span class="stat-number-project" data-target="3">0</span><span data-en="collaborators" data-es="colaboradores">colaboradores</span></div>
+                                <div class="stat-item"><i class="fas fa-eye"></i><span class="stat-visits" data-target="100000">0</span><span data-en="visits" data-es="visitas">visitas</span></div>
+                                <div class="stat-item"><i class="fas fa-gavel"></i><span>Scripter - Head Moderator</span></div>
+                            </div>
+                            <div class="project-hover-effect"></div>
                         </div>
-                        <h3>Chat sin censura</h3>
-                        <p class="project-desc" data-en="TEAM PROJECT REMOVED BY ROBLOX" data-es="PROYECTO EN EQUIPO ELIMINADO POR ROBLOX">PROYECTO EN EQUIPO ELIMINADO POR ROBLOX</p>
-                        <div class="project-stats">
-                            <div class="stat-item">
-                                <i class="fas fa-users"></i>
-                                <span class="stat-number-project" data-target="3">0</span>
-                                <span data-en="collaborators" data-es="colaboradores">colaboradores</span>
-                            </div>
-                            <div class="stat-item">
-                                <i class="fas fa-eye"></i>
-                                <span class="stat-visits" data-target="100000">0</span>
-                                <span data-en="visits" data-es="visitas">visitas</span>
-                            </div>
-                            <div class="stat-item">
-                                <i class="fas fa-gavel"></i>
-                                <span data-en="Developer - Moderator" data-es="Desarrollador - Moderador">Desarrollador - Moderador</span>
-                            </div>
-                        </div>
-                        <div class="project-hover-effect"></div>
                     </div>
 
-                    <div class="project-card offline-project">
-                        <div class="project-header">
-                            <div class="project-icon"><i class="fas fa-user-plus"></i></div>
-                            <div class="status-badge offline">
-                                <span class="status-dot"></span>
-                                <span data-en="OFFLINE" data-es="OFFLINE">OFFLINE</span>
+                    <div class="project-card-wrapper">
+                        <div class="project-card offline-project">
+                            <div class="project-header">
+                                <div class="project-icon"><i class="fas fa-user-plus"></i></div>
+                                <div class="status-badge deleted"><span class="status-dot"></span><span data-en="DELETED" data-es="ELIMINADO">ELIMINADO</span></div>
                             </div>
+                            <h3>Join Any Player</h3>
+                            <p class="project-desc" data-en="PROJECT BETWEEN 4 PEOPLE REMOVED BY ROBLOX" data-es="PROYECTO ENTRE 4 PERSONAS ELIMINADO POR ROBLOX">PROYECTO ENTRE 4 PERSONAS ELIMINADO POR ROBLOX</p>
+                            <div class="project-stats">
+                                <div class="stat-item"><i class="fas fa-users"></i><span class="stat-number-project" data-target="4">0</span><span data-en="collaborators" data-es="colaboradores">colaboradores</span></div>
+                                <div class="stat-item"><i class="fas fa-eye"></i><span class="stat-visits" data-target="54000">0</span><span data-en="visits" data-es="visitas">visitas</span></div>
+                                <div class="stat-item"><i class="fas fa-gavel"></i><span>Scripter - Admin</span></div>
+                            </div>
+                            <div class="project-hover-effect"></div>
                         </div>
-                        <h3>Join Any Player</h3>
-                        <p class="project-desc" data-en="PROJECT BETWEEN 4 PEOPLE REMOVED BY ROBLOX" data-es="PROYECTO ENTRE 4 PERSONAS ELIMINADO POR ROBLOX">PROYECTO ENTRE 4 PERSONAS ELIMINADO POR ROBLOX</p>
-                        <div class="project-stats">
-                            <div class="stat-item">
-                                <i class="fas fa-users"></i>
-                                <span class="stat-number-project" data-target="4">0</span>
-                                <span data-en="collaborators" data-es="colaboradores">colaboradores</span>
-                            </div>
-                            <div class="stat-item">
-                                <i class="fas fa-eye"></i>
-                                <span class="stat-visits" data-target="54000">0</span>
-                                <span data-en="visits" data-es="visitas">visitas</span>
-                            </div>
-                            <div class="stat-item">
-                                <i class="fas fa-gavel"></i>
-                                <span data-en="Developer" data-es="Desarrollador">Desarrollador</span>
-                            </div>
-                        </div>
-                        <div class="project-hover-effect"></div>
                     </div>
+
                 </div>
             </div>
         </section>
