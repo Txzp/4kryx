@@ -23,18 +23,45 @@
         <div class="particle"></div>
         <div class="particle"></div>
         <div class="particle"></div>
+        <div class="particle"></div>
+        <div class="particle"></div>
+        <div class="particle"></div>
+        <div class="particle"></div>
+        <div class="particle"></div>
+        <div class="particle"></div>
+        <div class="particle"></div>
+        <div class="particle"></div>
+        <div class="particle"></div>
+        <div class="particle"></div>
+        <div class="particle"></div>
+        <div class="particle"></div>
+        <div class="particle"></div>
+        <div class="particle"></div>
+        <div class="particle"></div>
     </div>
 
     <header class="topbar" id="topbar">
         <nav class="nav-buttons">
-            <button data-target="home" class="active">Home</button>
-            <button data-target="about">About</button>
-            <button data-target="projects">Projects</button>
+            <button data-target="home" class="active" data-en="Home" data-es="Inicio">Inicio</button>
+            <button data-target="about" data-en="About" data-es="Sobre mí">Sobre mí</button>
+            <button data-target="projects" data-en="Projects" data-es="Proyectos">Proyectos</button>
             <div class="dropdown">
-                <button class="dropbtn">🌐 Idioma</button>
-                <div class="dropdown-content">
-                    <a href="#" data-lang="en">🇬🇧 English</a>
-                    <a href="#" data-lang="es">🇪🇸 Español</a>
+                <button class="dropbtn" id="langBtn">
+                    <span class="lang-flag" id="langFlag">🇪🇸</span>
+                    <span id="langLabel">Español</span>
+                    <i class="fas fa-chevron-down lang-arrow"></i>
+                </button>
+                <div class="dropdown-content" id="langDropdown">
+                    <a href="#" data-lang="en" class="lang-option" id="opt-en">
+                        <span class="lang-check" id="check-en"></span>
+                        <span>🇬🇧</span>
+                        <span>English</span>
+                    </a>
+                    <a href="#" data-lang="es" class="lang-option active-lang" id="opt-es">
+                        <span class="lang-check" id="check-es"><i class="fas fa-check"></i></span>
+                        <span>🇪🇸</span>
+                        <span>Español</span>
+                    </a>
                 </div>
             </div>
         </nav>
@@ -47,7 +74,10 @@
                 <h1 class="main-title">
                     <span class="typing-text-full">DEVELOPER & CREATOR</span>
                 </h1>
-                <p class="description">I build things: <span class="rotating-text">Scripts</span><span class="cursor">|</span></p>
+                <p class="description">
+                    <span data-en="I build things:" data-es="Construyo cosas:">Construyo cosas:</span>
+                    <span class="rotating-text">Scripts</span><span class="cursor">|</span>
+                </p>
                 
                 <div class="social-links">
                     <a href="#" class="social-link discord">
@@ -69,7 +99,7 @@
                 </div>
                 
                 <button class="cta-button" id="exploreBtn">
-                    <span>EXPLORE MY WORK</span>
+                    <span data-en="EXPLORE MY WORK" data-es="EXPLORAR MI TRABAJO">EXPLORAR MI TRABAJO</span>
                     <i class="fas fa-arrow-down"></i>
                 </button>
             </div>
@@ -78,9 +108,14 @@
         <section id="about" class="section about-section">
             <div class="about-container">
                 <div class="about-text">
-                    <p class="section-label">▸ about me / who I am</p>
-                    <h2 class="fade-in">"I'm <span class="highlight">4kryx</span> — a developer and creator focused on building <span class="highlight">extraordinary things</span>"</h2>
-                    <p class="detail-text fade-in delay-1">I spend my time working on Roblox, VS Code, GitHub, crafting experiences and tools that push boundaries. Passionate about innovation and clean code.</p>
+                    <p class="section-label" data-en="▸ about me / who I am" data-es="▸ sobre mí / quién soy">▸ sobre mí / quién soy</p>
+                    <h2 class="fade-in">
+                        <span data-en='"I\'m' data-es='"Soy'>"Soy</span>
+                        <span class="highlight">4kryx</span>
+                        <span data-en="— a developer and creator focused on building" data-es="— un desarrollador y creador enfocado en construir">— un desarrollador y creador enfocado en construir</span>
+                        <span class="highlight" data-en="extraordinary things" data-es="cosas extraordinarias">cosas extraordinarias</span>"
+                    </h2>
+                    <p class="detail-text fade-in delay-1" data-en="I spend my time working on Roblox, VS Code, GitHub, crafting experiences and tools that push boundaries. Passionate about innovation and clean code." data-es="Paso mi tiempo trabajando en Roblox, VS Code, GitHub, creando experiencias y herramientas que superan límites. Apasionado por la innovación y el código limpio.">Paso mi tiempo trabajando en Roblox, VS Code, GitHub, creando experiencias y herramientas que superan límites. Apasionado por la innovación y el código limpio.</p>
                     <div class="skills-container fade-in delay-2">
                         <div class="skill-tag">C++</div>
                         <div class="skill-tag">LUA</div>
@@ -99,7 +134,7 @@
 
         <section id="projects" class="section projects-section">
             <div class="section-content">
-                <p class="section-label">▸ featured work</p>
+                <p class="section-label" data-en="▸ featured work" data-es="▸ trabajos destacados">▸ trabajos destacados</p>
                 <div class="projects-grid">
                     
                     <div class="project-card active-project">
@@ -107,16 +142,16 @@
                             <div class="project-icon"><i class="fas fa-code"></i></div>
                             <div class="status-badge active">
                                 <span class="status-dot"></span>
-                                ACTIVE
+                                <span data-en="ACTIVE" data-es="ACTIVO">ACTIVO</span>
                             </div>
                         </div>
                         <h3>VS Code | Kryhub</h3>
-                        <p class="project-desc">PROYECTO DE MODIFICACION DE HUB WINDUI SE USA PARA SCRIPTS Y SCRIPTS AVANZADOS PARA JUEGOS EXPLOITS</p>
+                        <p class="project-desc" data-en="HUB MODIFICATION PROJECT WINDUI USED FOR SCRIPTS AND ADVANCED SCRIPTS FOR GAME EXPLOITS" data-es="PROYECTO DE MODIFICACION DE HUB WINDUI SE USA PARA SCRIPTS Y SCRIPTS AVANZADOS PARA JUEGOS EXPLOITS">PROYECTO DE MODIFICACION DE HUB WINDUI SE USA PARA SCRIPTS Y SCRIPTS AVANZADOS PARA JUEGOS EXPLOITS</p>
                         <div class="project-stats">
                             <div class="stat-item">
                                 <i class="fas fa-users"></i>
                                 <span class="stat-number-project" data-target="1">0</span>
-                                <span>colaboradores</span>
+                                <span data-en="collaborators" data-es="colaboradores">colaboradores</span>
                             </div>
                             <div class="stat-item">
                                 <i class="fas fa-crown"></i>
@@ -131,25 +166,25 @@
                             <div class="project-icon"><i class="fas fa-skull"></i></div>
                             <div class="status-badge offline">
                                 <span class="status-dot"></span>
-                                OFFLINE
+                                <span data-en="OFFLINE" data-es="OFFLINE">OFFLINE</span>
                             </div>
                         </div>
                         <h3>Steal a Latam</h3>
-                        <p class="project-desc">PROYECTO GRANDE DE ROBLOX</p>
+                        <p class="project-desc" data-en="LARGE ROBLOX PROJECT" data-es="PROYECTO GRANDE DE ROBLOX">PROYECTO GRANDE DE ROBLOX</p>
                         <div class="project-stats">
                             <div class="stat-item">
                                 <i class="fas fa-users"></i>
                                 <span class="stat-number-project" data-target="8">0</span>
-                                <span>colaboradores</span>
+                                <span data-en="collaborators" data-es="colaboradores">colaboradores</span>
                             </div>
                             <div class="stat-item">
                                 <i class="fas fa-eye"></i>
                                 <span class="stat-visits" data-target="1100000">0</span>
-                                <span>visits</span>
+                                <span data-en="visits" data-es="visitas">visitas</span>
                             </div>
                             <div class="stat-item">
                                 <i class="fas fa-gavel"></i>
-                                <span>Developer</span>
+                                <span data-en="Developer" data-es="Desarrollador">Desarrollador</span>
                             </div>
                         </div>
                         <div class="project-hover-effect"></div>
@@ -160,25 +195,25 @@
                             <div class="project-icon"><i class="fas fa-comment-dots"></i></div>
                             <div class="status-badge offline">
                                 <span class="status-dot"></span>
-                                OFFLINE
+                                <span data-en="OFFLINE" data-es="OFFLINE">OFFLINE</span>
                             </div>
                         </div>
                         <h3>Chat sin censura</h3>
-                        <p class="project-desc">PROYECTO EN EQUIPO ELIMINADO POR ROBLOX</p>
+                        <p class="project-desc" data-en="TEAM PROJECT REMOVED BY ROBLOX" data-es="PROYECTO EN EQUIPO ELIMINADO POR ROBLOX">PROYECTO EN EQUIPO ELIMINADO POR ROBLOX</p>
                         <div class="project-stats">
                             <div class="stat-item">
                                 <i class="fas fa-users"></i>
                                 <span class="stat-number-project" data-target="3">0</span>
-                                <span>colaboradores</span>
+                                <span data-en="collaborators" data-es="colaboradores">colaboradores</span>
                             </div>
                             <div class="stat-item">
                                 <i class="fas fa-eye"></i>
                                 <span class="stat-visits" data-target="100000">0</span>
-                                <span>visits</span>
+                                <span data-en="visits" data-es="visitas">visitas</span>
                             </div>
                             <div class="stat-item">
                                 <i class="fas fa-gavel"></i>
-                                <span>Developer - Moderator</span>
+                                <span data-en="Developer - Moderator" data-es="Desarrollador - Moderador">Desarrollador - Moderador</span>
                             </div>
                         </div>
                         <div class="project-hover-effect"></div>
@@ -189,25 +224,25 @@
                             <div class="project-icon"><i class="fas fa-user-plus"></i></div>
                             <div class="status-badge offline">
                                 <span class="status-dot"></span>
-                                OFFLINE
+                                <span data-en="OFFLINE" data-es="OFFLINE">OFFLINE</span>
                             </div>
                         </div>
                         <h3>Join Any Player</h3>
-                        <p class="project-desc">PROYECTO ENTRE 4 PERSONAS ELIMINADO POR ROBLOX</p>
+                        <p class="project-desc" data-en="PROJECT BETWEEN 4 PEOPLE REMOVED BY ROBLOX" data-es="PROYECTO ENTRE 4 PERSONAS ELIMINADO POR ROBLOX">PROYECTO ENTRE 4 PERSONAS ELIMINADO POR ROBLOX</p>
                         <div class="project-stats">
                             <div class="stat-item">
                                 <i class="fas fa-users"></i>
                                 <span class="stat-number-project" data-target="4">0</span>
-                                <span>colaboradores</span>
+                                <span data-en="collaborators" data-es="colaboradores">colaboradores</span>
                             </div>
                             <div class="stat-item">
                                 <i class="fas fa-eye"></i>
                                 <span class="stat-visits" data-target="54000">0</span>
-                                <span>visits</span>
+                                <span data-en="visits" data-es="visitas">visitas</span>
                             </div>
                             <div class="stat-item">
                                 <i class="fas fa-gavel"></i>
-                                <span>Developer</span>
+                                <span data-en="Developer" data-es="Desarrollador">Desarrollador</span>
                             </div>
                         </div>
                         <div class="project-hover-effect"></div>
@@ -218,7 +253,7 @@
     </main>
 
     <footer class="footer">
-        <p>4KRYX © 2025 — Developer & Creator | Built with passion | Made in Vs code to Vercel app</p>
+        <p data-en="4KRYX © 2025 — Developer & Creator | Built with passion | Made in Vs code to Vercel app" data-es="4KRYX © 2025 — Desarrollador & Creador | Hecho con pasión | Hecho en Vs code a Vercel app">4KRYX © 2025 — Desarrollador & Creador | Hecho con pasión | Hecho en Vs code a Vercel app</p>
     </footer>
 
     <script src="script.js"></script>
