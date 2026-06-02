@@ -145,24 +145,28 @@
         });
     }
     
+    function changeLanguage(lang) {
+        if (lang === 'en') {
+            document.getElementById('about').querySelector('.section-label').textContent = '▸ about me / who I am';
+            document.getElementById('about').querySelector('h2').innerHTML = '"I\'m <span class="highlight">4kryx</span> — a developer and creator focused on building <span class="highlight">extraordinary things</span>"';
+            document.getElementById('about').querySelector('.detail-text').textContent = 'I spend my time working on Roblox, VS Code, GitHub, crafting experiences and tools that push boundaries. Passionate about innovation and clean code.';
+            document.getElementById('projects').querySelector('.section-label').textContent = '▸ featured work';
+            document.querySelector('.footer p').innerHTML = '4KRYX © 2025 — Developer & Creator | Built with passion | Made in Vs code to Vercel app';
+        } else if (lang === 'es') {
+            document.getElementById('about').querySelector('.section-label').textContent = '▸ sobre mí / quién soy';
+            document.getElementById('about').querySelector('h2').innerHTML = '"Soy <span class="highlight">4kryx</span> — un desarrollador y creador enfocado en construir <span class="highlight">cosas extraordinarias</span>"';
+            document.getElementById('about').querySelector('.detail-text').textContent = 'Paso mi tiempo trabajando en Roblox, VS Code, GitHub, creando experiencias y herramientas que superan límites. Apasionado por la innovación y el código limpio.';
+            document.getElementById('projects').querySelector('.section-label').textContent = '▸ trabajos destacados';
+            document.querySelector('.footer p').innerHTML = '4KRYX © 2025 — Desarrollador & Creador | Hecho con pasión | Hecho en Vs code a Vercel app';
+        }
+    }
+    
     const langButtons = document.querySelectorAll('.dropdown-content a');
     langButtons.forEach(btn => {
         btn.addEventListener('click', (e) => {
             e.preventDefault();
             const lang = btn.dataset.lang;
-            if (lang === 'en') {
-                document.querySelector('.section-label').textContent = '▸ about me / who I am';
-                document.querySelector('.about-text h2').innerHTML = '"I\'m <span class="highlight">4kryx</span> — a developer and creator focused on building <span class="highlight">extraordinary things</span>"';
-                document.querySelector('.detail-text').textContent = 'I spend my time working on Roblox, VS Code, GitHub, crafting experiences and tools that push boundaries. Passionate about innovation and clean code.';
-                document.querySelector('.projects-section .section-label').textContent = '▸ featured work';
-                document.querySelector('.footer p').innerHTML = '4KRYX © 2025 — Developer & Creator | Built with passion | Made in Vs code to Vercel app';
-            } else if (lang === 'es') {
-                document.querySelector('.section-label').textContent = '▸ sobre mí / quién soy';
-                document.querySelector('.about-text h2').innerHTML = '"Soy <span class="highlight">4kryx</span> — un desarrollador y creador enfocado en construir <span class="highlight">cosas extraordinarias</span>"';
-                document.querySelector('.detail-text').textContent = 'Paso mi tiempo trabajando en Roblox, VS Code, GitHub, creando experiencias y herramientas que superan límites. Apasionado por la innovación y el código limpio.';
-                document.querySelector('.projects-section .section-label').textContent = '▸ trabajos destacados';
-                document.querySelector('.footer p').innerHTML = '4KRYX © 2025 — Desarrollador & Creador | Hecho con pasión | Hecho en Vs code a Vercel app';
-            }
+            changeLanguage(lang);
         });
     });
     
