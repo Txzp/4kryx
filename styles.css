@@ -2,10 +2,8 @@
     --primary: #00c3ff;
     --primary-dark: #0099cc;
     --text: #ffffff;
-    --text-dark: #111111;
     --text-muted: #cccccc;
     --glass-bg: rgba(255, 255, 255, 0.05);
-    --glass-border: rgba(255, 255, 255, 0.1);
     --offline-bg: rgba(30, 30, 40, 0.85);
     --offline-border: rgba(100, 100, 120, 0.4);
     --success: #00ff88;
@@ -27,7 +25,6 @@ body {
     position: relative;
 }
 
-/* FONDO BLANCO Y NEGRO */
 .half-half-background {
     position: fixed;
     top: 0;
@@ -38,7 +35,6 @@ body {
     background: linear-gradient(90deg, #000000 0%, #000000 50%, #f5f5f5 50%, #f5f5f5 100%);
 }
 
-/* BOLITAS */
 .particles {
     position: fixed;
     top: 0;
@@ -75,7 +71,6 @@ body {
 .particle:nth-child(9) { width: 6px; height: 6px; left: 80%; animation-duration: 17s; animation-delay: 8s; }
 .particle:nth-child(10) { width: 8px; height: 8px; left: 45%; animation-duration: 19s; animation-delay: 2s; }
 
-/* NAVBAR - SIN EMOJIS */
 .topbar {
     position: fixed;
     top: 0;
@@ -98,6 +93,7 @@ body {
 .nav-buttons {
     display: flex;
     gap: 1rem;
+    align-items: center;
 }
 
 .nav-buttons button {
@@ -123,7 +119,60 @@ body {
     background: rgba(0, 195, 255, 0.1);
 }
 
-/* HOME SECTION */
+.dropdown {
+    position: relative;
+    display: inline-block;
+}
+
+.dropbtn {
+    border: none;
+    background: transparent;
+    color: var(--text);
+    padding: 0.6rem 1.5rem;
+    cursor: pointer;
+    border-radius: 50px;
+    font-weight: 600;
+    font-size: 0.9rem;
+    font-family: 'Orbitron', monospace;
+    transition: var(--transition);
+}
+
+.dropbtn:hover {
+    color: var(--primary);
+    transform: translateY(-2px);
+}
+
+.dropdown-content {
+    display: none;
+    position: absolute;
+    right: 0;
+    background-color: #0a0a0a;
+    min-width: 130px;
+    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.5);
+    z-index: 1;
+    border-radius: 12px;
+    border: 1px solid rgba(0, 195, 255, 0.3);
+    overflow: hidden;
+}
+
+.dropdown-content a {
+    color: var(--text);
+    padding: 10px 16px;
+    text-decoration: none;
+    display: block;
+    font-size: 0.85rem;
+    transition: var(--transition);
+}
+
+.dropdown-content a:hover {
+    background-color: rgba(0, 195, 255, 0.2);
+    color: var(--primary);
+}
+
+.dropdown:hover .dropdown-content {
+    display: block;
+}
+
 .section {
     min-height: 100vh;
     display: flex;
@@ -163,7 +212,6 @@ body {
     font-family: 'Orbitron', monospace;
 }
 
-/* TEXTO AZUL COMPLETO */
 .typing-text-full {
     display: inline-block;
     overflow: hidden;
@@ -189,12 +237,23 @@ body {
     color: #ccc;
 }
 
-.fixed-text {
+.rotating-text {
     color: var(--primary);
     font-weight: bold;
+    display: inline-block;
 }
 
-/* SOCIAL LINKS CON TIKTOK */
+.cursor {
+    animation: blink 1s infinite;
+    margin-left: 2px;
+    color: var(--primary);
+}
+
+@keyframes blink {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0; }
+}
+
 .social-links {
     display: flex;
     gap: 1rem;
@@ -226,7 +285,10 @@ body {
     color: #ff004f;
 }
 
-/* CTA BUTTON */
+.social-link.roblox:hover i {
+    color: #ff4444;
+}
+
 .cta-button {
     padding: 0.8rem 2rem;
     font-size: 0.9rem;
@@ -249,7 +311,6 @@ body {
     gap: 15px;
 }
 
-/* ABOUT SECTION */
 .about-section {
     background: rgba(0, 0, 0, 0.6);
     backdrop-filter: blur(10px);
@@ -341,7 +402,6 @@ body {
     transform: translateY(-2px);
 }
 
-/* PROJECTS SECTION */
 .projects-section {
     background: rgba(0, 0, 0, 0.6);
     backdrop-filter: blur(10px);
@@ -360,7 +420,6 @@ body {
     margin-top: 2rem;
 }
 
-/* CARDS */
 .project-card {
     background: rgba(255, 255, 255, 0.05);
     border: 1px solid rgba(255, 255, 255, 0.1);
@@ -438,7 +497,6 @@ body {
     margin-bottom: 1rem;
 }
 
-/* ESTADÍSTICAS CON 3 ÍCONOS */
 .project-stats {
     display: flex;
     flex-wrap: wrap;
@@ -465,7 +523,6 @@ body {
     color: var(--primary);
 }
 
-/* EFECTO HOVER SIN OVERLAY */
 .project-hover-effect {
     position: absolute;
     top: 0;
@@ -481,7 +538,6 @@ body {
     left: 100%;
 }
 
-/* FOOTER */
 .footer {
     text-align: center;
     padding: 1.2rem;
@@ -491,7 +547,6 @@ body {
     color: var(--text-muted);
 }
 
-/* RESPONSIVE */
 @media (max-width: 768px) {
     .topbar {
         padding: 0.8rem 1rem;
@@ -504,7 +559,7 @@ body {
         justify-content: center;
     }
     
-    .nav-buttons button {
+    .nav-buttons button, .dropbtn {
         padding: 0.4rem 1rem;
         font-size: 0.75rem;
     }
