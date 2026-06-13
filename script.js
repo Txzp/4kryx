@@ -284,6 +284,49 @@
         .catch(() => {});
     })();
 
+    /* ── About panel toggle ── */
+    const aboutBtn    = document.getElementById('aboutBtn');
+    const aboutPanel  = document.getElementById('aboutPanel');
+    const aboutClose  = document.getElementById('aboutClose');
+    const pageWrapper = document.querySelector('.page-wrapper');
+    let aboutOpen     = false;
+
+    function openAbout() {
+        if (aboutOpen) return;
+        aboutOpen = true;
+        /* Fade out main content */
+        pageWrapper.classList.add('content-hide');
+        pageWrapper.addEventListener('animationend', () => {
+            pageWrapper.style.opacity = '0';
+            pageWrapper.style.pointerEvents = 'none';
+            pageWrapper.classList.remove('content-hide');
+            /* Show about panel */
+            aboutPanel.classList.remove('panel-hide');
+            aboutPanel.classList.add('panel-show');
+        }, { once: true });
+    }
+
+    function closeAbout() {
+        if (!aboutOpen) return;
+        aboutOpen = false;
+        /* Fade out about panel */
+        aboutPanel.classList.remove('panel-show');
+        aboutPanel.classList.add('panel-hide');
+        aboutPanel.addEventListener('animationend', () => {
+            aboutPanel.classList.remove('panel-hide');
+            /* Fade in main content */
+            pageWrapper.style.opacity = '';
+            pageWrapper.style.pointerEvents = '';
+            pageWrapper.classList.add('content-show');
+            pageWrapper.addEventListener('animationend', () => {
+                pageWrapper.classList.remove('content-show');
+            }, { once: true });
+        }, { once: true });
+    }
+
+    if (aboutBtn)   aboutBtn.addEventListener('click',   openAbout);
+    if (aboutClose) aboutClose.addEventListener('click', closeAbout);
+
     /* ── Music toggle button ── */
     const mToggle = document.getElementById('musicToggle');
 
