@@ -134,7 +134,7 @@ body {
 
 #yt-player { display: none; }
 
-/* ── Page wrapper ── */
+/* ── Page wrapper — pushed further down ── */
 .page-wrapper {
     position: relative;
     z-index: 10;
@@ -144,8 +144,8 @@ body {
     justify-content: flex-start;
     min-height: 100vh;
     width: 100%;
-    padding: 2.5rem 1rem 3rem;
-    gap: 1rem;
+    padding: 6rem 1rem 3rem;
+    gap: 1.4rem;
 }
 
 /* ── Dev label ── */
@@ -393,9 +393,23 @@ body {
 
 .tag-text {
     font-size: 0.88rem;
-    color: rgba(255,255,255,0.6);
     font-weight: 400;
-    letter-spacing: 0.05em;
+    letter-spacing: 0.14em;
+    background: linear-gradient(90deg,
+        rgba(255,255,255,0.4) 0%,
+        rgba(255,255,255,1)   40%,
+        rgba(255,255,255,0.4) 80%,
+        rgba(255,255,255,0.4) 100%);
+    background-size: 200% auto;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    animation: tagShimmer 2.8s linear infinite;
+}
+
+@keyframes tagShimmer {
+    0%   { background-position: 200% center; }
+    100% { background-position: -200% center; }
 }
 
 /* ── Discord widget ── */
@@ -717,9 +731,86 @@ body {
 .view-counter i { font-size: 0.7rem; }
 #visitorCount { font-weight: 600; color: rgba(255,255,255,0.5); }
 
-/* ── Responsive ── */
+/* ══════════════════════════════════════════
+   MOBILE  (touch devices — no cursor, no rain)
+   ══════════════════════════════════════════ */
+@media (hover: none) and (pointer: coarse) and (max-width: 768px) {
+
+    /* Restore native cursor for phones */
+    *, *::before, *::after { cursor: auto !important; }
+
+    #customCursor  { display: none !important; }
+    #bgCanvas      { display: none !important; }
+
+    /* More breathing room on small screens */
+    .page-wrapper {
+        padding: 3.5rem 1rem 3rem;
+        gap: 1rem;
+    }
+
+    /* Full-width card */
+    .card-scene   { max-width: 100%; }
+    .profile-card {
+        padding: 2rem 1.2rem 1.5rem;
+        border-radius: 18px;
+        /* disable 3D transform style on mobile */
+        transform-style: flat;
+        transition: none;
+    }
+
+    /* Slightly smaller name */
+    .profile-name { font-size: 1.75rem; }
+
+    /* Skills grid: 2 columns on very small screens */
+    .skills-grid  { grid-template-columns: repeat(2, 1fr); gap: 0.6rem; }
+
+    /* Works list: full height, no max */
+    .works-list { max-height: none; }
+
+    /* Disable card flip (no hover on mobile) */
+    .profile-card.hovered { animation: none; }
+}
+
+/* ── Mobile tap ripple ── */
+.tap-ripple {
+    position: fixed;
+    width: 4px;
+    height: 4px;
+    border-radius: 50%;
+    border: 2px solid rgba(255, 255, 255, 0.9);
+    pointer-events: none;
+    z-index: 99998;
+    transform: translate(-50%, -50%);
+    animation: tapRippleOut 0.55s ease-out forwards;
+}
+
+@keyframes tapRippleOut {
+    0%   { width: 4px;  height: 4px;  opacity: 1;   border-width: 2px; }
+    60%  { width: 70px; height: 70px; opacity: 0.5; border-width: 1.5px; }
+    100% { width: 90px; height: 90px; opacity: 0;   border-width: 1px; }
+}
+
+/* Inner symbol that floats up */
+.tap-cross {
+    position: fixed;
+    pointer-events: none;
+    z-index: 99998;
+    transform: translate(-50%, -50%);
+    color: rgba(255, 255, 255, 0.9);
+    font-size: 1.1rem;
+    animation: tapCrossFloat 0.7s ease-out forwards;
+    text-shadow: 0 0 12px rgba(255,255,255,0.6);
+}
+
+@keyframes tapCrossFloat {
+    0%   { opacity: 1;   transform: translate(-50%, -50%) scale(1);    }
+    60%  { opacity: 0.8; transform: translate(-50%, -120%) scale(1.3); }
+    100% { opacity: 0;   transform: translate(-50%, -200%) scale(0.8); }
+}
+
+/* ── Responsive fallback (small desktop) ── */
 @media (max-width: 480px) {
-    .card-scene   { max-width: 350px; }
+    .card-scene   { max-width: 360px; }
     .profile-card { padding: 2rem 1.3rem 1.5rem; }
     .profile-name { font-size: 1.75rem; }
     .skills-grid  { gap: 0.5rem; }
