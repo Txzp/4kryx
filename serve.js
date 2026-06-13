@@ -17,6 +17,8 @@ const mimeTypes = {
   '.gif':  'image/gif',
   '.svg':  'image/svg+xml',
   '.ico':  'image/x-icon',
+  '.mp4':  'video/mp4',
+  '.mp3':  'audio/mpeg',
   '.woff': 'font/woff',
   '.woff2':'font/woff2',
   '.ttf':  'font/ttf',
@@ -25,35 +27,58 @@ const mimeTypes = {
 function getData() {
   try {
     const d = JSON.parse(fs.readFileSync(VISITORS_FILE, 'utf8'));
-    return { count: d.count || 0, ips: d.ips || [] };
+    return { count: d.count || 0, ids: d.ids || [] };
   }
-  catch { return { count: 0, ips: [] }; }
-}
-function saveData(data) {
-  fs.writeFileSync(VISITORS_FILE, JSON.stringify(data));
+  catch { return { count: 0, ids: [] }; }
 }
 
-function getClientIp(req) {
-  const forwarded = req.headers['x-forwarded-for'];
-  if (forwarded) return forwarded.split(',')[0].trim();
-  return req.socket.remoteAddress || 'unknown';
+function saveData(data) {
+  fs.writeFileSync(VISITORS_FILE, JSON.stringify(data));
 }
 
 const server = http.createServer((req, res) => {
   const urlPath = req.url.split('?')[0];
 
-  if (urlPath === '/api/visitors') {
-    const data = getData();
+  /* ── CORS preflight ── */
+  if (req.method === 'OPTIONS') {
+    res.writeHead(204, {
+      'Access-Control-Allow-Origin':  '*',
+      'Access-Control-Allow-Methods': 'GET, POST, OPTIONS',
+      'Access-Control-Allow-Headers': 'Content-Type',
+    });
+    res.end();
+    return;
+  }
 
+  /* ── Visitor API ── */
+  if (urlPath === '/api/visitors') {
     if (req.method === 'POST') {
-      const ip = getClientIp(req);
-      if (!data.ips.includes(ip)) {
-        data.ips.push(ip);
-        data.count = (data.count || 0) + 1;
-        saveData(data);
-      }
+      let body = '';
+      req.on('data', chunk => { body += chunk; });
+      req.on('end', () => {
+        const data = getData();
+        try {
+          const payload = JSON.parse(body);
+          const vid = String(payload.id || '').trim();
+          /* Only count if a valid UUID-like id is given and not seen before */
+          if (vid.length > 8 && !data.ids.includes(vid)) {
+            data.ids.push(vid);
+            data.count = (data.count || 0) + 1;
+            saveData(data);
+          }
+        } catch { /* bad body — just return current count */ }
+
+        res.writeHead(200, {
+          'Content-Type': 'application/json',
+          'Access-Control-Allow-Origin': '*',
+        });
+        res.end(JSON.stringify({ count: data.count || 0 }));
+      });
+      return;
     }
 
+    /* GET — just return count */
+    const data = getData();
     res.writeHead(200, {
       'Content-Type': 'application/json',
       'Access-Control-Allow-Origin': '*',
@@ -62,6 +87,7 @@ const server = http.createServer((req, res) => {
     return;
   }
 
+  /* ── Static files ── */
   let filePath = urlPath === '/' ? '/index.html' : urlPath;
   filePath = path.join(__dirname, filePath);
 
