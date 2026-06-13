@@ -6,91 +6,132 @@
     document.addEventListener('selectstart', e => e.preventDefault());
     document.addEventListener('dragstart',   e => e.preventDefault());
 
-    /* ── Custom cursor (DOM element) ── */
+    /* ── Detect phone only (NOT touchscreen laptops/tablets ≥ 1024px) ── */
+    const isPhone = (
+        window.matchMedia('(hover: none) and (pointer: coarse)').matches
+        || navigator.maxTouchPoints > 0
+    ) && window.innerWidth <= 768;
+
+    const isMobile = isPhone;
+
+    /* ── Custom cursor — desktop only ── */
     const cursor = document.getElementById('customCursor');
     let cursorVisible = false;
 
-    /* ── Canvas particles follow cursor ── */
-    const canvas = document.getElementById('bgCanvas');
-    const ctx    = canvas.getContext('2d');
-
-    function resize() {
-        canvas.width  = window.innerWidth;
-        canvas.height = window.innerHeight;
-    }
-    resize();
-    window.addEventListener('resize', resize);
-
-    let mouseX = window.innerWidth  / 2;
-    let mouseY = window.innerHeight / 2;
-
-    document.addEventListener('mousemove', e => {
-        mouseX = e.clientX;
-        mouseY = e.clientY;
-        if (cursor) {
+    if (!isMobile && cursor) {
+        document.addEventListener('mousemove', e => {
+            mouseX = e.clientX;
+            mouseY = e.clientY;
             cursor.style.left = e.clientX + 'px';
             cursor.style.top  = e.clientY + 'px';
             if (!cursorVisible) {
                 cursor.style.opacity = '1';
                 cursorVisible = true;
             }
-        }
-    });
-
-    /* ── Particle rain — brighter, denser, cursor-following ── */
-    const SYMBOLS = ['✦', '✧', '*', '❄', '+', '·', '✶', '⁕', '❋', '✼'];
-    function rand(a, b) { return Math.random() * (b - a) + a; }
-
-    class Particle {
-        constructor() { this.reset(true); }
-        reset(init) {
-            const spread = rand(-180, 180);
-            this.x      = init ? rand(0, canvas.width) : mouseX + spread;
-            this.y      = init ? rand(0, canvas.height) : mouseY - rand(10, 70);
-            this.size   = rand(9, 22);
-            this.sym    = SYMBOLS[Math.floor(Math.random() * SYMBOLS.length)];
-            this.speedY = rand(0.55, 1.8);
-            this.speedX = rand(-0.35, 0.35);
-            this.rot    = rand(0, Math.PI * 2);
-            this.rotSpd = rand(-0.016, 0.016);
-            /* Brighter alpha range */
-            this.alpha  = rand(0.22, 0.72);
-            this.aDir   = rand(0.004, 0.011) * (Math.random() > 0.5 ? 1 : -1);
-            this.aMin   = 0.15;
-            this.aMax   = 0.82;
-            this.scale  = rand(0.7, 1.4);
-        }
-        update() {
-            this.y     += this.speedY;
-            this.x     += this.speedX;
-            this.rot   += this.rotSpd;
-            this.alpha += this.aDir;
-            if (this.alpha > this.aMax || this.alpha < this.aMin) this.aDir *= -1;
-            if (this.y > canvas.height + 40) this.reset(false);
-        }
-        draw() {
-            ctx.save();
-            ctx.translate(this.x, this.y);
-            ctx.rotate(this.rot);
-            ctx.scale(this.scale, this.scale);
-            ctx.globalAlpha  = this.alpha;
-            ctx.fillStyle    = '#ffffff';
-            ctx.font         = `${this.size}px serif`;
-            ctx.textAlign    = 'center';
-            ctx.textBaseline = 'middle';
-            ctx.fillText(this.sym, 0, 0);
-            ctx.restore();
-        }
+        });
+    } else if (cursor) {
+        cursor.style.display = 'none';
     }
 
-    /* More particles for a dense rain */
-    const particles = Array.from({ length: 120 }, () => new Particle());
+    /* ── Canvas ── */
+    const canvas = document.getElementById('bgCanvas');
+    const ctx    = canvas ? canvas.getContext('2d') : null;
 
-    (function loop() {
-        ctx.clearRect(0, 0, canvas.width, canvas.height);
-        particles.forEach(p => { p.update(); p.draw(); });
-        requestAnimationFrame(loop);
-    })();
+    let mouseX = window.innerWidth  / 2;
+    let mouseY = window.innerHeight / 2;
+
+    /* ── Particle rain — desktop only ── */
+    if (!isMobile && canvas && ctx) {
+        function resize() {
+            canvas.width  = window.innerWidth;
+            canvas.height = window.innerHeight;
+        }
+        resize();
+        window.addEventListener('resize', resize);
+
+        const SYMBOLS = ['✦', '✧', '*', '❄', '+', '·', '✶', '⁕', '❋', '✼'];
+        function rand(a, b) { return Math.random() * (b - a) + a; }
+
+        class Particle {
+            constructor() { this.reset(true); }
+            reset(init) {
+                const spread = rand(-180, 180);
+                this.x      = init ? rand(0, canvas.width) : mouseX + spread;
+                this.y      = init ? rand(0, canvas.height) : mouseY - rand(10, 70);
+                this.size   = rand(9, 22);
+                this.sym    = SYMBOLS[Math.floor(Math.random() * SYMBOLS.length)];
+                this.speedY = rand(0.55, 1.8);
+                this.speedX = rand(-0.35, 0.35);
+                this.rot    = rand(0, Math.PI * 2);
+                this.rotSpd = rand(-0.016, 0.016);
+                this.alpha  = rand(0.22, 0.72);
+                this.aDir   = rand(0.004, 0.011) * (Math.random() > 0.5 ? 1 : -1);
+                this.aMin   = 0.15;
+                this.aMax   = 0.82;
+                this.scale  = rand(0.7, 1.4);
+            }
+            update() {
+                this.y     += this.speedY;
+                this.x     += this.speedX;
+                this.rot   += this.rotSpd;
+                this.alpha += this.aDir;
+                if (this.alpha > this.aMax || this.alpha < this.aMin) this.aDir *= -1;
+                if (this.y > canvas.height + 40) this.reset(false);
+            }
+            draw() {
+                ctx.save();
+                ctx.translate(this.x, this.y);
+                ctx.rotate(this.rot);
+                ctx.scale(this.scale, this.scale);
+                ctx.globalAlpha  = this.alpha;
+                ctx.fillStyle    = '#ffffff';
+                ctx.font         = `${this.size}px serif`;
+                ctx.textAlign    = 'center';
+                ctx.textBaseline = 'middle';
+                ctx.fillText(this.sym, 0, 0);
+                ctx.restore();
+            }
+        }
+
+        const particles = Array.from({ length: 120 }, () => new Particle());
+
+        (function loop() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            particles.forEach(p => { p.update(); p.draw(); });
+            requestAnimationFrame(loop);
+        })();
+
+    } else if (canvas) {
+        /* Hide canvas on mobile — no rain */
+        canvas.style.display = 'none';
+    }
+
+    /* ── Mobile tap ripple animation ── */
+    if (isMobile) {
+        function spawnTapRipple(x, y) {
+            /* Outer expanding ring */
+            const ring = document.createElement('div');
+            ring.className = 'tap-ripple';
+            ring.style.left = x + 'px';
+            ring.style.top  = y + 'px';
+            document.body.appendChild(ring);
+            ring.addEventListener('animationend', () => ring.remove());
+
+            /* Inner cross symbol */
+            const cross = document.createElement('div');
+            cross.className = 'tap-cross';
+            cross.style.left = x + 'px';
+            cross.style.top  = y + 'px';
+            cross.textContent = '✦';
+            document.body.appendChild(cross);
+            cross.addEventListener('animationend', () => cross.remove());
+        }
+
+        document.addEventListener('touchstart', e => {
+            const t = e.touches[0];
+            if (t) spawnTapRipple(t.clientX, t.clientY);
+        }, { passive: true });
+    }
 
     /* ── 3D Parallax tilt — card follows mouse in real time ── */
     const cardScene   = document.getElementById('cardScene');
@@ -209,8 +250,24 @@
         });
     });
 
-    /* ── Visitor counter ── */
-    fetch('/api/visitors', { method: 'POST' })
+    /* ── Visitor counter — UUID per browser, no refresh re-count ── */
+    (function () {
+        const KEY = 'vuid_4kryx';
+        let vid = localStorage.getItem(KEY);
+        if (!vid) {
+            /* Generate a unique visitor ID and store it */
+            vid = (crypto.randomUUID
+                ? crypto.randomUUID()
+                : Date.now().toString(36) + Math.random().toString(36).slice(2)
+            );
+            localStorage.setItem(KEY, vid);
+        }
+
+        fetch('/api/visitors', {
+            method:  'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body:    JSON.stringify({ id: vid }),
+        })
         .then(r => r.json())
         .then(data => {
             const el = document.getElementById('visitorCount');
@@ -225,6 +282,7 @@
             }, 35);
         })
         .catch(() => {});
+    })();
 
     /* ── Music toggle button ── */
     const mToggle = document.getElementById('musicToggle');
