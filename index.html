@@ -9,6 +9,222 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 </head>
 <body>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>† angel † | 4KRYX</title>
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=UnifrakturMaguntia&family=Space+Grotesk:wght@300;400;500;600&family=Orbitron:wght@400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+</head>
+<body oncontextmenu="return false">
+
+    <!-- Click To Enter overlay -->
+    <div id="enterOverlay">
+        <div id="enterContent">
+            <p class="enter-title">✝ 4KRYX ✝</p>
+            <button id="enterBtn">Click To Enter</button>
+        </div>
+    </div>
+
+    <!-- Custom cursor -->
+    <div id="customCursor">
+        <img src="/cursor.gif" alt="" draggable="false">
+    </div>
+
+    <canvas id="bgCanvas"></canvas>
+
+    <!-- Background video -->
+    <video id="bgVideo" autoplay loop muted playsinline>
+        <source src="/bg.mp4" type="video/mp4">
+    </video>
+
+    <!-- Background audio -->
+    <audio id="bgAudio" loop preload="auto">
+        <source src="/bg.mp3" type="audio/mpeg">
+    </audio>
+
+    <div class="page-wrapper">
+
+        <!-- Label ABOVE the card -->
+        <p class="dev-label">developer <span class="sep">|</span> creator</p>
+
+        <!-- Card scene for 3D flip -->
+        <div class="card-scene" id="cardScene">
+            <div class="profile-card" id="profileCard">
+
+                <!-- Avatar -->
+                <div class="avatar-ring" id="avatarRing">
+                    <div class="avatar-wrapper">
+                        <img class="avatar-img" id="avatarImg" draggable="false"
+                             src="https://i.pinimg.com/736x/7a/e1/65/7ae1654e20ab87fe49c6827c8192dfbf.jpg" alt="angel">
+                        <div class="avatar-glow"></div>
+                    </div>
+                </div>
+
+                <!-- Name -->
+                <div class="profile-name-wrap">
+                    <span class="cross" id="crossL">†</span>
+                    <span class="profile-name" id="typedName"></span>
+                    <span class="cross" id="crossR">†</span>
+                </div>
+
+                <!-- Tag -->
+                <div class="profile-tag">
+                    <span class="bracket">*</span>
+                    <span class="tag-text">kryshub</span>
+                    <span class="bracket">*</span>
+                </div>
+
+                <!-- Discord widget -->
+                <div class="discord-widget">
+                    <div class="discord-left">
+                        <div class="discord-avatar-wrap">
+                            <img class="discord-avatar" draggable="false"
+                                 src="https://i.pinimg.com/736x/7a/e1/65/7ae1654e20ab87fe49c6827c8192dfbf.jpg" alt="4kryx">
+                            <span class="discord-status-dot"></span>
+                        </div>
+                        <div class="discord-info">
+                            <span class="discord-username">4kryx</span>
+                            <div class="discord-activity">
+                                <span class="activity-label">Working</span>
+                                <span class="activity-name">Kryshub</span>
+                            </div>
+                            <div class="discord-custom">
+                                <span class="status-icon">⛔</span>
+                                <span>vs code active</span>
+                            </div>
+                        </div>
+                    </div>
+                    <img class="discord-app-icon" draggable="false"
+                         src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/vscode/vscode-original.svg"
+                         alt="VSCode">
+                </div>
+
+                <!-- Tab buttons -->
+                <div class="tab-buttons">
+                    <button class="tab-btn active" data-tab="skills">
+                        <i class="fas fa-code"></i> Skills
+                    </button>
+                    <button class="tab-btn" data-tab="works">
+                        <i class="fas fa-briefcase"></i> Works
+                    </button>
+                </div>
+
+                <!-- Skills panel -->
+                <div class="tab-panel active" id="tab-skills">
+                    <div class="skills-grid">
+                        <div class="skill-item">
+                            <img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/cplusplus/cplusplus-original.svg" alt="C++" draggable="false">
+                            <span>C++</span>
+                        </div>
+                        <div class="skill-item">
+                            <img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/lua/lua-original.svg" alt="Lua" draggable="false">
+                            <span>Lua</span>
+                        </div>
+                        <div class="skill-item">
+                            <img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/javascript/javascript-original.svg" alt="JavaScript" draggable="false">
+                            <span>JavaScript</span>
+                        </div>
+                        <div class="skill-item">
+                            <img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/html5/html5-original.svg" alt="HTML" draggable="false">
+                            <span>HTML/CSS</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Works panel -->
+                <div class="tab-panel" id="tab-works">
+                    <div class="works-list">
+
+                        <div class="work-card active-work">
+                            <div class="work-header">
+                                <span class="work-icon"><i class="fas fa-code"></i></span>
+                                <span class="work-badge badge-active">ACTIVE</span>
+                            </div>
+                            <p class="work-title">VS Code | Kryhub</p>
+                            <p class="work-desc">Hub modification · WindUI · advanced scripts</p>
+                            <div class="work-meta">
+                                <span><i class="fas fa-crown"></i> Owner: 4kryx</span>
+                            </div>
+                        </div>
+
+                        <div class="work-card">
+                            <div class="work-header">
+                                <span class="work-icon"><i class="fab fa-roblox"></i></span>
+                                <span class="work-badge badge-retired">RETIRED</span>
+                            </div>
+                            <p class="work-title">Steal a Latam</p>
+                            <p class="work-desc">Large Roblox project · 8 collaborators</p>
+                            <div class="work-meta">
+                                <span><i class="fas fa-eye"></i> 1.1M visits</span>
+                                <span><i class="fas fa-hammer"></i> Builder</span>
+                            </div>
+                        </div>
+
+                        <div class="work-card">
+                            <div class="work-header">
+                                <span class="work-icon"><i class="fas fa-comment-dots"></i></span>
+                                <span class="work-badge badge-deleted">DELETED</span>
+                            </div>
+                            <p class="work-title">Chat sin censura</p>
+                            <p class="work-desc">Team project · removed by Roblox</p>
+                            <div class="work-meta">
+                                <span><i class="fas fa-eye"></i> 100K visits</span>
+                                <span><i class="fas fa-code"></i> Scripter · Head Mod</span>
+                            </div>
+                        </div>
+
+                        <div class="work-card">
+                            <div class="work-header">
+                                <span class="work-icon"><i class="fas fa-user-plus"></i></span>
+                                <span class="work-badge badge-deleted">DELETED</span>
+                            </div>
+                            <p class="work-title">Join Any Player</p>
+                            <p class="work-desc">4-person project · removed by Roblox</p>
+                            <div class="work-meta">
+                                <span><i class="fas fa-eye"></i> 54K visits</span>
+                                <span><i class="fas fa-code"></i> Scripter · Admin</span>
+                            </div>
+                        </div>
+
+                        <div class="work-card">
+                            <div class="work-header">
+                                <span class="work-icon"><i class="fas fa-crosshairs"></i></span>
+                                <span class="work-badge badge-retired">RETIRED</span>
+                            </div>
+                            <p class="work-title">Assassin VS Sheriff</p>
+                            <p class="work-desc">Competitive Roblox game · 6 collaborators</p>
+                            <div class="work-meta">
+                                <span><i class="fas fa-eye"></i> 26.2M visits</span>
+                                <span><i class="fas fa-shield-halved"></i> Moderator</span>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+
+                <!-- View counter -->
+                <div class="view-counter">
+                    <i class="fas fa-eye"></i>
+                    <span id="visitorCount">—</span>
+                </div>
+
+            </div><!-- /profile-card -->
+        </div><!-- /card-scene -->
+
+        <!-- Music toggle -->
+        <div class="music-toggle" id="musicToggle" title="Toggle music">
+            <i class="fas fa-volume-high" id="musicIcon"></i>
+        </div>
+
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
 
     <!-- Intro splash screen -->
     <div id="introScreen">
