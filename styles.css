@@ -6,7 +6,7 @@
 }
 
 :root {
-    --card-bg: rgba(255,255,255,0.07);
+    --card-bg: rgba(255,255,255,0.10);
     --card-border: rgba(255,255,255,0.13);
     --text: #ffffff;
 }
@@ -202,10 +202,10 @@ body {
     max-width: 420px;
 }
 
-/* ── Card — transparent white glass ── */
+/* ── Card — matches About card exactly ── */
 .profile-card {
-    background: rgba(255,255,255,0.07);
-    border: 1px solid rgba(255,255,255,0.15);
+    background: rgba(255,255,255,0.10);
+    border: 1px solid rgba(255,255,255,0.13);
     border-radius: 22px;
     padding: 2.2rem 1.8rem 1.6rem;
     width: 100%;
@@ -213,14 +213,12 @@ body {
     flex-direction: column;
     align-items: center;
     gap: 0;
-    backdrop-filter: blur(32px);
-    -webkit-backdrop-filter: blur(32px);
+    backdrop-filter: blur(28px);
+    -webkit-backdrop-filter: blur(28px);
     box-shadow:
-        0 0 0 1px rgba(255,255,255,0.07),
-        0 28px 80px rgba(0,0,0,0.72),
-        0 8px 32px rgba(0,0,0,0.45),
-        inset 0 1px 0 rgba(255,255,255,0.18),
-        inset 0 -1px 0 rgba(255,255,255,0.04);
+        0 0 0 1px rgba(255,255,255,0.06),
+        0 28px 80px rgba(0,0,0,0.70),
+        inset 0 1px 0 rgba(255,255,255,0.12);
     animation: cardIn 0.7s cubic-bezier(0.34,1.4,0.64,1) both;
     position: relative;
     overflow: hidden;
@@ -283,11 +281,11 @@ body {
 
 .avatar-wrapper {
     position: relative;
-    width: 138px; height: 138px;
+    width: 158px; height: 158px;
 }
 
 .avatar-img {
-    width: 138px; height: 138px;
+    width: 158px; height: 158px;
     border-radius: 0;
     object-fit: contain;
     border: none;
@@ -424,8 +422,8 @@ body {
 /* ── Discord widget ── */
 .discord-widget {
     width: 100%;
-    background: rgba(255,255,255,0.05);
-    border: 1px solid rgba(255,255,255,0.1);
+    background: rgba(255,255,255,0.07);
+    border: 1px solid rgba(255,255,255,0.13);
     border-radius: 13px;
     padding: 0.85rem 1rem;
     display: flex;
@@ -437,8 +435,8 @@ body {
     transition: background 0.3s, border-color 0.3s;
 }
 .discord-widget:hover {
-    background: rgba(255,255,255,0.08);
-    border-color: rgba(255,255,255,0.18);
+    background: rgba(255,255,255,0.12);
+    border-color: rgba(255,255,255,0.22);
 }
 
 .discord-left {
@@ -519,10 +517,10 @@ body {
 .tab-btn {
     flex: 1;
     padding: 0.58rem 0;
-    background: rgba(255,255,255,0.06);
-    border: 1px solid rgba(255,255,255,0.1);
+    background: rgba(255,255,255,0.10);
+    border: 1px solid rgba(255,255,255,0.13);
     border-radius: 12px;
-    color: rgba(255,255,255,0.45);
+    color: rgba(255,255,255,0.55);
     font-family: 'Space Grotesk', sans-serif;
     font-size: 0.8rem;
     font-weight: 600;
@@ -534,21 +532,33 @@ body {
     align-items: center;
     justify-content: center;
     gap: 0.4rem;
+    backdrop-filter: blur(28px);
+    -webkit-backdrop-filter: blur(28px);
+    box-shadow:
+        0 0 0 1px rgba(255,255,255,0.06),
+        0 4px 16px rgba(0,0,0,0.4),
+        inset 0 1px 0 rgba(255,255,255,0.12);
 }
 
 .tab-btn:hover {
-    background: rgba(255,255,255,0.14);
-    border-color: rgba(255,255,255,0.35);
+    background: rgba(255,255,255,0.16);
+    border-color: rgba(255,255,255,0.28);
     color: #fff;
     transform: translateY(-2px);
-    box-shadow: 0 6px 20px rgba(255,255,255,0.08);
+    box-shadow:
+        0 0 0 1px rgba(255,255,255,0.1),
+        0 6px 20px rgba(255,255,255,0.08),
+        inset 0 1px 0 rgba(255,255,255,0.18);
 }
 
 .tab-btn.active {
-    background: rgba(255,255,255,0.14);
-    border-color: rgba(255,255,255,0.45);
+    background: rgba(255,255,255,0.16);
+    border-color: rgba(255,255,255,0.28);
     color: #fff;
-    box-shadow: 0 0 20px rgba(255,255,255,0.1);
+    box-shadow:
+        0 0 0 1px rgba(255,255,255,0.1),
+        0 0 20px rgba(255,255,255,0.08),
+        inset 0 1px 0 rgba(255,255,255,0.18);
 }
 
 /* ── Tab panels ── */
@@ -565,31 +575,49 @@ body {
     to   { opacity: 1; transform: translateY(0); }
 }
 
-/* ── Skills grid ── */
+/* ── Skills grid (languages with icons) ── */
 .skills-grid {
     display: grid;
     grid-template-columns: repeat(4, 1fr);
+    gap: 0.7rem;
+    margin-bottom: 0.6rem;
+}
+
+/* ── Apps grid (3-col row below languages) ── */
+.apps-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
     gap: 0.7rem;
     margin-bottom: 0.5rem;
 }
 
 .skill-item {
-    background: rgba(255,255,255,0.06);
-    border: 1px solid rgba(255,255,255,0.1);
+    background: rgba(255,255,255,0.10);
+    border: 1px solid rgba(255,255,255,0.13);
     border-radius: 14px;
     padding: 0.85rem 0.4rem 0.7rem;
     display: flex;
     flex-direction: column;
     align-items: center;
+    justify-content: center;
     gap: 0.45rem;
     transition: background 0.25s, border-color 0.25s, transform 0.25s, box-shadow 0.25s;
     animation: skillPop 0.4s cubic-bezier(0.34,1.56,0.64,1) both;
+    backdrop-filter: blur(28px);
+    -webkit-backdrop-filter: blur(28px);
+    box-shadow:
+        0 0 0 1px rgba(255,255,255,0.06),
+        0 4px 16px rgba(0,0,0,0.4),
+        inset 0 1px 0 rgba(255,255,255,0.12);
 }
 
-.skill-item:nth-child(1) { animation-delay: 0.05s; }
-.skill-item:nth-child(2) { animation-delay: 0.12s; }
-.skill-item:nth-child(3) { animation-delay: 0.19s; }
-.skill-item:nth-child(4) { animation-delay: 0.26s; }
+.skills-grid .skill-item:nth-child(1) { animation-delay: 0.05s; }
+.skills-grid .skill-item:nth-child(2) { animation-delay: 0.12s; }
+.skills-grid .skill-item:nth-child(3) { animation-delay: 0.19s; }
+.skills-grid .skill-item:nth-child(4) { animation-delay: 0.26s; }
+.apps-grid   .skill-item:nth-child(1) { animation-delay: 0.33s; }
+.apps-grid   .skill-item:nth-child(2) { animation-delay: 0.40s; }
+.apps-grid   .skill-item:nth-child(3) { animation-delay: 0.47s; }
 
 @keyframes skillPop {
     from { opacity: 0; transform: scale(0.75) translateY(8px); }
@@ -597,10 +625,13 @@ body {
 }
 
 .skill-item:hover {
-    background: rgba(255,255,255,0.12);
-    border-color: rgba(255,255,255,0.35);
+    background: rgba(255,255,255,0.16);
+    border-color: rgba(255,255,255,0.28);
     transform: translateY(-5px) scale(1.06);
-    box-shadow: 0 10px 28px rgba(255,255,255,0.08);
+    box-shadow:
+        0 0 0 1px rgba(255,255,255,0.1),
+        0 10px 28px rgba(255,255,255,0.08),
+        inset 0 1px 0 rgba(255,255,255,0.18);
 }
 
 .skill-item img {
@@ -615,6 +646,35 @@ body {
     color: rgba(255,255,255,0.7);
     text-align: center;
     letter-spacing: 0.02em;
+    line-height: 1.3;
+}
+
+/* Apps grid text always white */
+.apps-grid .skill-item span {
+    color: #fff;
+}
+
+/* Active skill items */
+.skill-active-item {
+    border-color: rgba(59,165,93,0.45) !important;
+    background: rgba(59,165,93,0.09) !important;
+}
+
+.skill-active-item:hover {
+    background: rgba(59,165,93,0.16) !important;
+    border-color: rgba(59,165,93,0.7) !important;
+}
+
+.skill-active-badge {
+    font-size: 0.44rem !important;
+    font-family: 'Orbitron', monospace;
+    font-weight: 700;
+    color: #3ba55d !important;
+    letter-spacing: 0.08em;
+    background: rgba(59,165,93,0.15);
+    border: 1px solid rgba(59,165,93,0.4);
+    border-radius: 50px;
+    padding: 0.08rem 0.35rem;
 }
 
 /* ── Works list ── */
@@ -634,8 +694,8 @@ body {
 .works-list::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.15); border-radius: 4px; }
 
 .work-card {
-    background: rgba(255,255,255,0.05);
-    border: 1px solid rgba(255,255,255,0.09);
+    background: rgba(255,255,255,0.07);
+    border: 1px solid rgba(255,255,255,0.13);
     border-radius: 13px;
     padding: 0.7rem 0.9rem;
     transition: background 0.25s, border-color 0.25s, transform 0.25s, box-shadow 0.25s;
@@ -647,6 +707,7 @@ body {
 .work-card:nth-child(3) { animation-delay: 0.16s; }
 .work-card:nth-child(4) { animation-delay: 0.22s; }
 .work-card:nth-child(5) { animation-delay: 0.28s; }
+.work-card:nth-child(6) { animation-delay: 0.34s; }
 
 @keyframes workSlide {
     from { opacity: 0; transform: translateX(-12px); }
@@ -654,7 +715,7 @@ body {
 }
 
 .work-card:hover {
-    background: rgba(255,255,255,0.09);
+    background: rgba(255,255,255,0.12);
     border-color: rgba(255,255,255,0.22);
     transform: translateX(4px);
     box-shadow: -4px 0 16px rgba(255,255,255,0.06);
@@ -662,7 +723,7 @@ body {
 
 .active-work {
     border-color: rgba(255,255,255,0.25) !important;
-    background: rgba(255,255,255,0.08) !important;
+    background: rgba(255,255,255,0.10) !important;
 }
 
 .work-header {
@@ -685,8 +746,10 @@ body {
 }
 
 .badge-active  { color: #3ba55d; border-color: rgba(59,165,93,0.5);   background: rgba(59,165,93,0.1); }
+.badge-working { color: #f59e0b; border-color: rgba(245,158,11,0.5); background: rgba(245,158,11,0.08); }
 .badge-retired { color: #a78bfa; border-color: rgba(167,139,250,0.5); background: rgba(167,139,250,0.08); }
 .badge-deleted { color: #f87171; border-color: rgba(248,113,113,0.5); background: rgba(248,113,113,0.08); }
+.badge-off     { color: #6b7280; border-color: rgba(107,114,128,0.5); background: rgba(107,114,128,0.08); }
 
 .work-title {
     font-size: 0.83rem;
@@ -785,7 +848,7 @@ body {
     width: 38px; height: 38px;
     border-radius: 10px;
     background: rgba(255,255,255,0.07);
-    border: 1px solid rgba(255,255,255,0.12);
+    border: 1px solid rgba(255,255,255,0.13);
     color: rgba(255,255,255,0.6);
     font-size: 0.9rem;
     display: flex; align-items: center; justify-content: center;
@@ -799,9 +862,9 @@ body {
     transform: scale(1.1) rotate(90deg);
 }
 
-/* Inner card */
+/* Inner card — reference style, profile card now matches this */
 .about-inner {
-    background: rgba(255,255,255,0.07);
+    background: rgba(255,255,255,0.10);
     border: 1px solid rgba(255,255,255,0.13);
     border-radius: 22px;
     padding: 2rem 1.8rem;
@@ -877,7 +940,7 @@ body {
     letter-spacing: 0.06em;
     color: rgba(255,255,255,0.75);
     background: rgba(255,255,255,0.07);
-    border: 1px solid rgba(255,255,255,0.14);
+    border: 1px solid rgba(255,255,255,0.13);
     border-radius: 50px;
     padding: 0.3rem 0.75rem;
     transition: background 0.2s, border-color 0.2s, color 0.2s;
@@ -905,7 +968,7 @@ body {
 #visitorCount { font-weight: 600; color: rgba(255,255,255,0.5); }
 
 /* ══════════════════════════════════════════
-   MOBILE  (touch devices — no cursor, no rain)
+   MOBILE  (touch devices — rain still visible)
    ══════════════════════════════════════════ */
 @media (hover: none) and (pointer: coarse) and (max-width: 768px) {
 
@@ -913,7 +976,6 @@ body {
     *, *::before, *::after { cursor: auto !important; }
 
     #customCursor  { display: none !important; }
-    #bgCanvas      { display: none !important; }
 
     /* More breathing room on small screens */
     .page-wrapper {
