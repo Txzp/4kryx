@@ -5,6 +5,7 @@ const path = require('path');
 const PORT          = 5000;
 const HOST          = '0.0.0.0';
 const VISITORS_FILE = path.join(__dirname, 'visitors.json');
+const REPLIT_DB_URL = process.env.REPLIT_DB_URL;
 
 const mimeTypes = {
   '.html': 'text/html',
@@ -24,19 +25,55 @@ const mimeTypes = {
   '.ttf':  'font/ttf',
 };
 
-function getData() {
+/* ── Replit KV helpers (used in production autoscale) ── */
+async function dbGet(key) {
+  try {
+    const r = await fetch(`${REPLIT_DB_URL}/${encodeURIComponent(key)}`);
+    if (!r.ok || r.status === 404) return null;
+    const text = await r.text();
+    if (!text) return null;
+    try { return JSON.parse(text); } catch { return text; }
+  } catch { return null; }
+}
+
+async function dbSet(key, value) {
+  try {
+    await fetch(REPLIT_DB_URL, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+      body: `${encodeURIComponent(key)}=${encodeURIComponent(JSON.stringify(value))}`,
+    });
+  } catch { /* ignore write errors */ }
+}
+
+/* ── Data layer: Replit DB in production, JSON file in dev ── */
+async function getData() {
+  if (REPLIT_DB_URL) {
+    const count = await dbGet('visitor_count');
+    const ids   = await dbGet('visitor_ids');
+    return {
+      count: Number(count) || 0,
+      ids:   Array.isArray(ids) ? ids : [],
+    };
+  }
   try {
     const d = JSON.parse(fs.readFileSync(VISITORS_FILE, 'utf8'));
     return { count: d.count || 0, ids: d.ids || [] };
+  } catch { return { count: 0, ids: [] }; }
+}
+
+async function saveData(data) {
+  if (REPLIT_DB_URL) {
+    await Promise.all([
+      dbSet('visitor_count', data.count),
+      dbSet('visitor_ids',   data.ids),
+    ]);
+  } else {
+    fs.writeFileSync(VISITORS_FILE, JSON.stringify(data));
   }
-  catch { return { count: 0, ids: [] }; }
 }
 
-function saveData(data) {
-  fs.writeFileSync(VISITORS_FILE, JSON.stringify(data));
-}
-
-const server = http.createServer((req, res) => {
+const server = http.createServer(async (req, res) => {
   const urlPath = req.url.split('?')[0];
 
   /* ── CORS preflight ── */
@@ -55,8 +92,8 @@ const server = http.createServer((req, res) => {
     if (req.method === 'POST') {
       let body = '';
       req.on('data', chunk => { body += chunk; });
-      req.on('end', () => {
-        const data = getData();
+      req.on('end', async () => {
+        const data = await getData();
         try {
           const payload = JSON.parse(body);
           const vid = String(payload.id || '').trim();
@@ -64,7 +101,7 @@ const server = http.createServer((req, res) => {
           if (vid.length > 8 && !data.ids.includes(vid)) {
             data.ids.push(vid);
             data.count = (data.count || 0) + 1;
-            saveData(data);
+            await saveData(data);
           }
         } catch { /* bad body — just return current count */ }
 
@@ -78,7 +115,7 @@ const server = http.createServer((req, res) => {
     }
 
     /* GET — just return count */
-    const data = getData();
+    const data = await getData();
     res.writeHead(200, {
       'Content-Type': 'application/json',
       'Access-Control-Allow-Origin': '*',
