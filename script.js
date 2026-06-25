@@ -40,8 +40,8 @@
     let mouseX = window.innerWidth  / 2;
     let mouseY = window.innerHeight / 2;
 
-    /* ── Particle rain — desktop only ── */
-    if (!isMobile && canvas && ctx) {
+    /* ── Particle rain — desktop follows cursor, mobile falls straight down ── */
+    if (canvas && ctx) {
         function resize() {
             canvas.width  = window.innerWidth;
             canvas.height = window.innerHeight;
@@ -55,13 +55,21 @@
         class Particle {
             constructor() { this.reset(true); }
             reset(init) {
-                const spread = rand(-180, 180);
-                this.x      = init ? rand(0, canvas.width) : mouseX + spread;
-                this.y      = init ? rand(0, canvas.height) : mouseY - rand(10, 70);
+                if (isMobile) {
+                    /* Mobile: start at random x across full width, rain from top */
+                    this.x = rand(0, canvas.width);
+                    this.y = init ? rand(0, canvas.height) : rand(-40, -10);
+                    this.speedX = rand(-0.15, 0.15); /* almost straight down */
+                } else {
+                    /* Desktop: spawn near cursor */
+                    const spread = rand(-180, 180);
+                    this.x      = init ? rand(0, canvas.width) : mouseX + spread;
+                    this.y      = init ? rand(0, canvas.height) : mouseY - rand(10, 70);
+                    this.speedX = rand(-0.35, 0.35);
+                }
                 this.size   = rand(9, 22);
                 this.sym    = SYMBOLS[Math.floor(Math.random() * SYMBOLS.length)];
                 this.speedY = rand(0.55, 1.8);
-                this.speedX = rand(-0.35, 0.35);
                 this.rot    = rand(0, Math.PI * 2);
                 this.rotSpd = rand(-0.016, 0.016);
                 this.alpha  = rand(0.22, 0.72);
@@ -100,37 +108,37 @@
             particles.forEach(p => { p.update(); p.draw(); });
             requestAnimationFrame(loop);
         })();
-
-    } else if (canvas) {
-        /* Hide canvas on mobile — no rain */
-        canvas.style.display = 'none';
     }
 
-    /* ── Mobile tap ripple animation ── */
+    /* ── Click / tap ripple animation (both desktop and mobile) ── */
+    function spawnTapRipple(x, y) {
+        /* Outer expanding ring */
+        const ring = document.createElement('div');
+        ring.className = 'tap-ripple';
+        ring.style.left = x + 'px';
+        ring.style.top  = y + 'px';
+        document.body.appendChild(ring);
+        ring.addEventListener('animationend', () => ring.remove());
+
+        /* Inner cross symbol */
+        const cross = document.createElement('div');
+        cross.className = 'tap-cross';
+        cross.style.left = x + 'px';
+        cross.style.top  = y + 'px';
+        cross.textContent = '✦';
+        document.body.appendChild(cross);
+        cross.addEventListener('animationend', () => cross.remove());
+    }
+
     if (isMobile) {
-        function spawnTapRipple(x, y) {
-            /* Outer expanding ring */
-            const ring = document.createElement('div');
-            ring.className = 'tap-ripple';
-            ring.style.left = x + 'px';
-            ring.style.top  = y + 'px';
-            document.body.appendChild(ring);
-            ring.addEventListener('animationend', () => ring.remove());
-
-            /* Inner cross symbol */
-            const cross = document.createElement('div');
-            cross.className = 'tap-cross';
-            cross.style.left = x + 'px';
-            cross.style.top  = y + 'px';
-            cross.textContent = '✦';
-            document.body.appendChild(cross);
-            cross.addEventListener('animationend', () => cross.remove());
-        }
-
         document.addEventListener('touchstart', e => {
             const t = e.touches[0];
             if (t) spawnTapRipple(t.clientX, t.clientY);
         }, { passive: true });
+    } else {
+        document.addEventListener('click', e => {
+            spawnTapRipple(e.clientX, e.clientY);
+        });
     }
 
     /* ── 3D Parallax tilt — card follows mouse in real time ── */
@@ -345,3 +353,36 @@
     }
 
 })();
+
+/* ── Discord Presence ── */
+async function updateDiscordPresence() {
+  try {
+    const res = await fetch("https://rpc-bot-production.up.railway.app/api/presence");
+    const data = await res.json();
+
+    const avatar = document.querySelector(".discord-avatar");
+    if (avatar && data.user?.avatar) avatar.src = data.user.avatar;
+
+    const username = document.querySelector(".discord-username");
+    if (username && data.user?.displayName) username.textContent = data.user.displayName;
+
+    const dot = document.querySelector(".discord-status-dot");
+    if (dot) {
+      dot.className = "discord-status-dot";
+      dot.classList.add("status-" + (data.status || "offline"));
+    }
+
+    const activity = data.activities?.find(a => a.type === 0);
+    const activityName = document.querySelector(".activity-name");
+    if (activityName) activityName.textContent = activity?.name || "Idle";
+
+    const activityLabel = document.querySelector(".activity-label");
+    if (activityLabel) activityLabel.textContent = activity ? "Playing" : "Idle";
+
+  } catch (e) {
+    console.error("Presence error:", e);
+  }
+}
+
+updateDiscordPresence();
+setInterval(updateDiscordPresence, 15000);
