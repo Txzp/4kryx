@@ -5,7 +5,11 @@ const path = require('path');
 const PORT          = 5000;
 const HOST          = '0.0.0.0';
 const VISITORS_FILE = path.join(__dirname, 'visitors.json');
-const REPLIT_DB_URL = process.env.REPLIT_DB_URL;
+
+/* Storage env vars — checked in priority order */
+const REPLIT_DB_URL    = process.env.REPLIT_DB_URL;
+const UPSTASH_URL      = process.env.UPSTASH_REDIS_REST_URL;
+const UPSTASH_TOKEN    = process.env.UPSTASH_REDIS_REST_TOKEN;
 
 const mimeTypes = {
   '.html': 'text/html',
@@ -25,8 +29,28 @@ const mimeTypes = {
   '.ttf':  'font/ttf',
 };
 
-/* ── Replit KV helpers (used in production autoscale) ── */
-async function dbGet(key) {
+/* ── Upstash Redis REST helpers ── */
+async function upstashGet(key) {
+  try {
+    const r = await fetch(`${UPSTASH_URL}/get/${encodeURIComponent(key)}`, {
+      headers: { Authorization: `Bearer ${UPSTASH_TOKEN}` },
+    });
+    const j = await r.json();
+    if (j.result === null || j.result === undefined) return null;
+    try { return JSON.parse(j.result); } catch { return j.result; }
+  } catch { return null; }
+}
+
+async function upstashSet(key, value) {
+  try {
+    await fetch(`${UPSTASH_URL}/set/${encodeURIComponent(key)}/${encodeURIComponent(JSON.stringify(value))}`, {
+      headers: { Authorization: `Bearer ${UPSTASH_TOKEN}` },
+    });
+  } catch { /* ignore */ }
+}
+
+/* ── Replit KV REST helpers ── */
+async function replitGet(key) {
   try {
     const r = await fetch(`${REPLIT_DB_URL}/${encodeURIComponent(key)}`);
     if (!r.ok || r.status === 404) return null;
@@ -36,26 +60,31 @@ async function dbGet(key) {
   } catch { return null; }
 }
 
-async function dbSet(key, value) {
+async function replitSet(key, value) {
   try {
     await fetch(REPLIT_DB_URL, {
       method: 'POST',
       headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
       body: `${encodeURIComponent(key)}=${encodeURIComponent(JSON.stringify(value))}`,
     });
-  } catch { /* ignore write errors */ }
+  } catch { /* ignore */ }
 }
 
-/* ── Data layer: Replit DB in production, JSON file in dev ── */
+/* ── Unified data layer ── */
 async function getData() {
-  if (REPLIT_DB_URL) {
-    const count = await dbGet('visitor_count');
-    const ids   = await dbGet('visitor_ids');
-    return {
-      count: Number(count) || 0,
-      ids:   Array.isArray(ids) ? ids : [],
-    };
+  /* 1. Upstash (Vercel / any host) */
+  if (UPSTASH_URL && UPSTASH_TOKEN) {
+    const count = await upstashGet('visitor_count');
+    const ids   = await upstashGet('visitor_ids');
+    return { count: Number(count) || 0, ids: Array.isArray(ids) ? ids : [] };
   }
+  /* 2. Replit KV */
+  if (REPLIT_DB_URL) {
+    const count = await replitGet('visitor_count');
+    const ids   = await replitGet('visitor_ids');
+    return { count: Number(count) || 0, ids: Array.isArray(ids) ? ids : [] };
+  }
+  /* 3. Local file (dev) */
   try {
     const d = JSON.parse(fs.readFileSync(VISITORS_FILE, 'utf8'));
     return { count: d.count || 0, ids: d.ids || [] };
@@ -63,14 +92,21 @@ async function getData() {
 }
 
 async function saveData(data) {
+  if (UPSTASH_URL && UPSTASH_TOKEN) {
+    await Promise.all([
+      upstashSet('visitor_count', data.count),
+      upstashSet('visitor_ids',   data.ids),
+    ]);
+    return;
+  }
   if (REPLIT_DB_URL) {
     await Promise.all([
-      dbSet('visitor_count', data.count),
-      dbSet('visitor_ids',   data.ids),
+      replitSet('visitor_count', data.count),
+      replitSet('visitor_ids',   data.ids),
     ]);
-  } else {
-    fs.writeFileSync(VISITORS_FILE, JSON.stringify(data));
+    return;
   }
+  try { fs.writeFileSync(VISITORS_FILE, JSON.stringify(data)); } catch { /* ignore */ }
 }
 
 const server = http.createServer(async (req, res) => {
@@ -97,13 +133,12 @@ const server = http.createServer(async (req, res) => {
         try {
           const payload = JSON.parse(body);
           const vid = String(payload.id || '').trim();
-          /* Only count if a valid UUID-like id is given and not seen before */
           if (vid.length > 8 && !data.ids.includes(vid)) {
             data.ids.push(vid);
             data.count = (data.count || 0) + 1;
             await saveData(data);
           }
-        } catch { /* bad body — just return current count */ }
+        } catch { /* bad body */ }
 
         res.writeHead(200, {
           'Content-Type': 'application/json',
@@ -114,7 +149,7 @@ const server = http.createServer(async (req, res) => {
       return;
     }
 
-    /* GET — just return count */
+    /* GET */
     const data = await getData();
     res.writeHead(200, {
       'Content-Type': 'application/json',
@@ -152,4 +187,6 @@ const server = http.createServer(async (req, res) => {
 
 server.listen(PORT, HOST, () => {
   console.log(`Server running at http://${HOST}:${PORT}/`);
+  const storage = UPSTASH_URL ? 'Upstash Redis' : REPLIT_DB_URL ? 'Replit KV' : 'local file';
+  console.log(`Visitor storage: ${storage}`);
 });

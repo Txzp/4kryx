@@ -10,19 +10,24 @@
 </head>
 <body oncontextmenu="return false">
 
-    <!-- Click To Enter overlay -->
+    <!-- Enter overlay -->
     <div id="enterOverlay">
         <div id="enterContent">
-            <p class="enter-title">✝ 4KRYX ✝</p>
-            <button id="enterBtn">Click To Enter</button>
+            <p class="enter-title">
+                <span class="enter-cross">✟</span>
+                <span class="enter-name">4KRYX</span>
+                <span class="enter-cross">✟</span>
+            </p>
+            <p class="enter-sub">click anywhere to enter</p>
         </div>
     </div>
 
     <!-- Custom cursor -->
     <div id="customCursor">
-        <img src="/cursor.gif" alt="" draggable="false">
+        <img src="/arrow-cursor.png" alt="" draggable="false">
     </div>
 
+    <!-- Canvas background particles -->
     <canvas id="bgCanvas"></canvas>
 
     <!-- Background video -->
@@ -35,281 +40,282 @@
         <source src="/bg.mp3" type="audio/mpeg">
     </audio>
 
-    <div class="page-wrapper">
+    <!-- Scroll navigation dots -->
+    <div class="scroll-dots" id="scrollDots">
+        <div class="scroll-dot active" data-section="0"></div>
+        <div class="scroll-dot" data-section="1"></div>
+        <div class="scroll-dot" data-section="2"></div>
+    </div>
 
-        <!-- Label ABOVE the card -->
-        <p class="dev-label">developer <span class="sep">|</span> creator</p>
+    <!-- Music toggle -->
+    <div class="music-toggle" id="musicToggle" title="Toggle music">
+        <i class="fas fa-volume-high" id="musicIcon"></i>
+    </div>
 
-        <!-- Card scene for 3D flip -->
-        <div class="card-scene" id="cardScene">
-            <div class="profile-card" id="profileCard">
+    <!-- About button -->
+    <div class="about-btn" id="aboutBtn" title="About">
+        <i class="fas fa-question"></i>
+    </div>
 
-                <!-- Avatar -->
-                <div class="avatar-ring" id="avatarRing">
-                    <div class="avatar-wrapper">
-                        <img class="avatar-img" id="avatarImg" draggable="false"
-                             src="/avatar.png" alt="angel">
-                        <div class="avatar-glow"></div>
-                    </div>
-                </div>
-
-                <!-- Name -->
-                <div class="profile-name-wrap">
-                    <span class="cross" id="crossL">†</span>
-                    <span class="profile-name" id="typedName"></span>
-                    <span class="cross" id="crossR">†</span>
-                </div>
-
-                <!-- Tag -->
-                <div class="profile-tag">
-                    <span class="bracket">*</span>
-                    <span class="tag-text">kryshub</span>
-                    <span class="bracket">*</span>
-                </div>
-
-                <!-- Discord widget -->
-                <div class="discord-widget">
-                    <div class="discord-left">
-                        <div class="discord-avatar-wrap">
-                            <img class="discord-avatar" draggable="false"
-                                 src="/avatar.png" alt="4kryx">
-                            <span class="discord-status-dot"></span>
-                        </div>
-                        <div class="discord-info">
-                            <span class="discord-username">4kryx</span>
-                            <div class="discord-activity">
-                                <span class="activity-label">Working</span>
-                                <span class="activity-name">Empty</span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Tab buttons -->
-                <div class="tab-buttons">
-                    <button class="tab-btn active" data-tab="skills">
-                        <i class="fas fa-code"></i> Skills
-                    </button>
-                    <button class="tab-btn" data-tab="works">
-                        <i class="fas fa-briefcase"></i> Works
-                    </button>
-                </div>
-
-                <!-- Skills panel -->
-                <div class="tab-panel active" id="tab-skills">
-                    <div class="skills-grid">
-                        <div class="skill-item">
-                            <img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/cplusplus/cplusplus-original.svg" alt="C++" draggable="false">
-                            <span>C++</span>
-                        </div>
-                        <div class="skill-item">
-                            <img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/lua/lua-original.svg" alt="Lua" draggable="false">
-                            <span>Lua</span>
-                        </div>
-                        <div class="skill-item">
-                            <img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/javascript/javascript-original.svg" alt="JavaScript" draggable="false">
-                            <span>JavaScript</span>
-                        </div>
-                        <div class="skill-item">
-                            <img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/html5/html5-original.svg" alt="HTML" draggable="false">
-                            <span>HTML/CSS</span>
-                        </div>
-                    </div>
-                    <div class="apps-grid">
-                        <div class="skill-item skill-active-item">
-                            <span>VS Code</span>
-                            <span class="skill-active-badge">ACTIVE</span>
-                        </div>
-                        <div class="skill-item skill-active-item">
-                            <span>Roblox Studio</span>
-                            <span class="skill-active-badge">ACTIVE</span>
-                        </div>
-                        <div class="skill-item skill-active-item">
-                            <span>Blender</span>
-                            <span class="skill-active-badge">ACTIVE</span>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Works panel -->
-                <div class="tab-panel" id="tab-works">
-                    <div class="works-list">
-
-                        <div class="work-card active-work">
-                            <div class="work-header">
-                                <span class="work-icon"><i class="fas fa-gamepad"></i></span>
-                                <span class="work-badge badge-working">WORKING</span>
-                            </div>
-                            <p class="work-title">Killer vs Runners</p>
-                            <p class="work-desc">A killer vs runners game where the floor disappears</p>
-                            <div class="work-meta">
-                                <span><i class="fas fa-crown"></i> Owner: 4kryx</span>
-                            </div>
-                        </div>
-
-                        <div class="work-card">
-                            <div class="work-header">
-                                <span class="work-icon"><i class="fas fa-code"></i></span>
-                                <span class="work-badge badge-off">OFF</span>
-                            </div>
-                            <p class="work-title">VS Code | Kryhub</p>
-                            <p class="work-desc">Hub modification · WindUI · advanced scripts</p>
-                            <div class="work-meta">
-                                <span><i class="fas fa-crown"></i> Owner: 4kryx</span>
-                            </div>
-                        </div>
-
-                        <div class="work-card">
-                            <div class="work-header">
-                                <span class="work-icon"><i class="fab fa-roblox"></i></span>
-                                <span class="work-badge badge-retired">RETIRED</span>
-                            </div>
-                            <p class="work-title">Steal a Latam</p>
-                            <p class="work-desc">Large Roblox project · 8 collaborators</p>
-                            <div class="work-meta">
-                                <span><i class="fas fa-eye"></i> 1.1M visits</span>
-                                <span><i class="fas fa-hammer"></i> Builder</span>
-                            </div>
-                        </div>
-
-                        <div class="work-card">
-                            <div class="work-header">
-                                <span class="work-icon"><i class="fas fa-comment-dots"></i></span>
-                                <span class="work-badge badge-deleted">DELETED</span>
-                            </div>
-                            <p class="work-title">Chat sin censura</p>
-                            <p class="work-desc">Team project · removed by Roblox</p>
-                            <div class="work-meta">
-                                <span><i class="fas fa-eye"></i> 100K visits</span>
-                                <span><i class="fas fa-code"></i> Scripter · Head Mod</span>
-                            </div>
-                        </div>
-
-                        <div class="work-card">
-                            <div class="work-header">
-                                <span class="work-icon"><i class="fas fa-user-plus"></i></span>
-                                <span class="work-badge badge-deleted">DELETED</span>
-                            </div>
-                            <p class="work-title">Join Any Player</p>
-                            <p class="work-desc">4-person project · removed by Roblox</p>
-                            <div class="work-meta">
-                                <span><i class="fas fa-eye"></i> 54K visits</span>
-                                <span><i class="fas fa-code"></i> Scripter · Admin</span>
-                            </div>
-                        </div>
-
-                        <div class="work-card">
-                            <div class="work-header">
-                                <span class="work-icon"><i class="fas fa-crosshairs"></i></span>
-                                <span class="work-badge badge-retired">RETIRED</span>
-                            </div>
-                            <p class="work-title">Assassin VS Sheriff</p>
-                            <p class="work-desc">Competitive Roblox game · 6 collaborators</p>
-                            <div class="work-meta">
-                                <span><i class="fas fa-eye"></i> 26.2M visits</span>
-                                <span><i class="fas fa-shield-halved"></i> Moderator</span>
-                            </div>
-                        </div>
-
-                    </div>
-                </div>
-
-                <!-- View counter -->
-                <div class="view-counter">
-                    <i class="fas fa-eye"></i>
-                    <span id="visitorCount">—</span>
-                </div>
-
-            </div><!-- /profile-card -->
-        </div><!-- /card-scene -->
-
-        <!-- Music toggle -->
-        <div class="music-toggle" id="musicToggle" title="Toggle music">
-            <i class="fas fa-volume-high" id="musicIcon"></i>
-        </div>
-
-        <!-- About button -->
-        <div class="about-btn" id="aboutBtn" title="About">
-            <i class="fas fa-question"></i>
-        </div>
-
+    <!-- Stats — fixed bottom-left -->
+    <div class="stats-fixed">
+        <i class="fas fa-eye"></i>
+        <span id="visitorCount">—</span>
+        <span class="stat-sep">|</span>
+        <i class="fas fa-location-dot"></i>
+        Virginia Beach, VA
     </div>
 
     <!-- About panel -->
-    <div id="aboutPanel" class="about-panel" aria-hidden="true">
+    <div id="aboutPanel" class="about-panel">
         <button id="aboutClose" class="about-close-btn" title="Close">
             <i class="fas fa-times"></i>
         </button>
-
         <div class="about-inner">
-
-            <div class="about-section">
-                <h2 class="about-heading">
-                    <span class="about-heading-cross">✝</span>
-                    About Me
-                    <span class="about-heading-cross">✝</span>
-                </h2>
-                <p class="about-text">
-                    I'm Angel, a developer and creator known online as
-                    <span class="about-highlight">4KRYX</span>.
-                    I specialize in C++, Lua, JavaScript, and web development.
-                    I enjoy building scripts, games, and unique digital experiences —
-                    always pushing the limits of what I can create.
-                </p>
-            </div>
-
-            <div class="about-divider"></div>
-
-            <div class="about-section">
-                <h2 class="about-heading">
-                    <span class="about-heading-cross">✝</span>
-                    Languages
-                    <span class="about-heading-cross">✝</span>
-                </h2>
-                <div class="about-tags">
-                    <span class="about-tag">
-                        <i class="fas fa-comment"></i> Spanish
-                    </span>
-                    <span class="about-tag">
-                        <i class="fas fa-comment"></i> English
-                    </span>
-                </div>
-            </div>
-
-            <div class="about-divider"></div>
-
-            <div class="about-section">
-                <h2 class="about-heading">
-                    <span class="about-heading-cross">✝</span>
-                    About This Website
-                    <span class="about-heading-cross">✝</span>
-                </h2>
-                <p class="about-text">
-                    This website was built with
-                    <span class="about-highlight">Visual Studio Code</span>,
-                    using <span class="about-highlight">GitHub</span> for version control
-                    and deployed via <span class="about-highlight">Vercel.app</span>.
-                    Inspired by <span class="about-highlight">guns.lol</span> — a clean,
-                    dark aesthetic profile page made for creators.
-                </p>
-                <div class="about-tags">
-                    <span class="about-tag">
-                        <i class="fas fa-code"></i> VS Code
-                    </span>
-                    <span class="about-tag">
-                        <i class="fab fa-github"></i> GitHub
-                    </span>
-                    <span class="about-tag">
-                        <i class="fas fa-rocket"></i> Vercel.app
-                    </span>
-                    <span class="about-tag">
-                        <i class="fas fa-globe"></i> guns.lol
-                    </span>
-                </div>
-            </div>
-
+            <h2 class="about-heading">
+                <span class="about-cross">✟</span>
+                About This Website
+                <span class="about-cross">✟</span>
+            </h2>
+            <p class="about-text">
+                This website was built with <span class="about-hi">Visual Studio Code</span>,
+                using <span class="about-hi">GitHub</span> for version control
+                and deployed via <span class="about-hi">Vercel.app</span>.
+                Inspired by <span class="about-hi">guns.lol</span> — a dark aesthetic
+                profile page made for creators.
+            </p>
         </div>
     </div>
+
+    <!-- Main scrollable wrapper -->
+    <div class="site-wrapper" id="siteWrapper">
+
+        <!-- ═══ SECTION 1 — Hero ═══ -->
+        <section class="section" id="section1">
+            <div class="hero-content">
+
+                <!-- Title at top -->
+                <p class="hero-title">developer <span class="title-sep">|</span> creator</p>
+
+                <!-- Avatar -->
+                <div class="hero-avatar-wrap">
+                    <img class="hero-avatar" src="/avatar.png" alt="angel" draggable="false">
+                </div>
+
+                <!-- DC badge tags (below avatar) -->
+                <div class="tags-row">
+                    <img class="tag-img" src="/tagdc1.png" alt="tag1" draggable="false">
+                    <img class="tag-img" src="/tagdc2.png" alt="tag2" draggable="false">
+                    <img class="tag-img" src="/tagdc3.png" alt="tag3" draggable="false">
+                    <img class="tag-img" src="/tagdc4.png" alt="tag4" draggable="false">
+                    <img class="tag-img" src="/tagdc5.png" alt="tag5" draggable="false">
+                </div>
+
+                <!-- angel (fraktur) -->
+                <span class="hero-angel">𝖆𝖓𝖌𝖊𝖑</span>
+
+                <!-- kryshub typewriter -->
+                <div class="hero-kryshub-wrap">
+                    <span id="kryshubTyped" class="hero-kryshub"></span><span class="hero-cursor">|</span>
+                </div>
+
+                <!-- Links -->
+                <div class="links-row">
+                    <a class="link-item" href="https://guns.lol/4kryx" target="_blank" rel="noopener">
+                        <span class="link-icon"><i class="fas fa-crosshairs"></i></span>
+                        <span class="link-label">guns.lol</span>
+                    </a>
+                    <a class="link-item" href="https://www.roblox.com/es/users/8677588088/profile" target="_blank" rel="noopener">
+                        <span class="link-icon"><i class="fab fa-roblox"></i></span>
+                        <span class="link-label">Roblox</span>
+                    </a>
+                    <a class="link-item" href="https://www.tiktok.com/@4kryx" target="_blank" rel="noopener">
+                        <span class="link-icon"><i class="fab fa-tiktok"></i></span>
+                        <span class="link-label">TikTok</span>
+                    </a>
+                    <a class="link-item" href="https://open.spotify.com/user/31m3lxlyomhcpjicuxzhhycyyktm" target="_blank" rel="noopener">
+                        <span class="link-icon"><i class="fab fa-spotify"></i></span>
+                        <span class="link-label">Spotify</span>
+                    </a>
+                </div>
+
+                <!-- Discord presence + Timezone -->
+                <div class="widgets-row">
+                    <div class="discord-widget">
+                        <div class="discord-left">
+                            <div class="discord-avatar-wrap">
+                                <img class="discord-avatar" draggable="false" src="/avatar.png" alt="4kryx">
+                                <span class="discord-status-dot"></span>
+                            </div>
+                            <div class="discord-info">
+                                <span class="discord-username">4kryx</span>
+                                <div class="discord-activity">
+                                    <span class="activity-label">Idle</span>
+                                    <span class="activity-name"></span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="timezone-widget">
+                        <div class="tz-inner">
+                            <span class="tz-label-top"><i class="fas fa-clock"></i> Timezone</span>
+                            <div class="tz-clock" id="tzClock">—</div>
+                            <div class="tz-date" id="tzDate">—</div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+            <button class="scroll-btn" onclick="scrollToSection(1)">- 𝔰𝔠𝔯𝔬𝔩𝔩 𝔣𝔬𝔯 𝔪𝔬𝔯𝔢 -</button>
+        </section>
+
+        <!-- ═══ SECTION 2 — About & Skills ═══ -->
+        <section class="section" id="section2">
+            <div class="s2-content">
+
+                <p class="s2-bio">
+                    Hi, I'm <span class="s2-hi">Angel</span> and I live in
+                    <span class="s2-hi">Virginia Beach, VA</span>,
+                    with my three wives. I'm a developer, scripter, and creator.
+                </p>
+
+                <div class="s2-divider"></div>
+
+                <h3 class="s2-heading">Languages</h3>
+                <div class="pills-row">
+                    <span class="pill">
+                        <img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/cplusplus/cplusplus-original.svg" alt="C++" draggable="false">
+                        C++
+                    </span>
+                    <span class="pill">
+                        <img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/lua/lua-original.svg" alt="Lua" draggable="false">
+                        Lua
+                    </span>
+                    <span class="pill">
+                        <img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/javascript/javascript-original.svg" alt="JS" draggable="false">
+                        JavaScript
+                    </span>
+                    <span class="pill">
+                        <img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/html5/html5-original.svg" alt="HTML" draggable="false">
+                        HTML / CSS
+                    </span>
+                </div>
+
+                <div class="s2-divider"></div>
+
+                <h3 class="s2-heading">Apps</h3>
+                <div class="pills-row">
+                    <span class="pill">
+                        <img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/vscode/vscode-original.svg" alt="VS Code" draggable="false">
+                        VS Code
+                    </span>
+                    <span class="pill">
+                        <i class="fab fa-roblox pill-fa"></i>
+                        Roblox Studio
+                    </span>
+                    <span class="pill">
+                        <img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/blender/blender-original.svg" alt="Blender" draggable="false">
+                        Blender
+                    </span>
+                    <span class="pill">
+                        <i class="fas fa-server pill-fa"></i>
+                        Railway
+                    </span>
+                    <span class="pill">
+                        <img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/github/github-original.svg" alt="GitHub" draggable="false">
+                        GitHub
+                    </span>
+                    <span class="pill">
+                        <i class="fab fa-discord pill-fa"></i>
+                        BetterDiscord
+                    </span>
+                </div>
+
+            </div>
+
+            <button class="scroll-btn" onclick="scrollToSection(2)">- 𝔰𝔠𝔯𝔬𝔩𝔩 𝔣𝔬𝔯 𝔪𝔬𝔯𝔢 -</button>
+        </section>
+
+        <!-- ═══ SECTION 3 — Works ═══ -->
+        <section class="section" id="section3">
+            <div class="s3-content">
+
+                <h2 class="s3-heading">
+                    <span class="s3-cross">✟</span> Works <span class="s3-cross">✟</span>
+                </h2>
+
+                <div class="works-grid">
+
+                    <div class="work-card">
+                        <div class="work-top">
+                            <i class="fas fa-gamepad work-icon"></i>
+                            <span class="work-badge badge-working">WORKING</span>
+                        </div>
+                        <p class="work-title">Killer vs Runners</p>
+                        <p class="work-desc">A killer vs runners game where the floor disappears</p>
+                        <p class="work-meta"><i class="fas fa-crown"></i> Owner</p>
+                    </div>
+
+                    <div class="work-card">
+                        <div class="work-top">
+                            <i class="fab fa-discord work-icon"></i>
+                            <span class="work-badge badge-working">WORKING</span>
+                        </div>
+                        <p class="work-title">Rpc-4kryx</p>
+                        <p class="work-desc">Discord bot presence activities</p>
+                        <p class="work-meta"><i class="fas fa-crown"></i> Owner</p>
+                    </div>
+
+                    <div class="work-card">
+                        <div class="work-top">
+                            <i class="fas fa-code work-icon"></i>
+                            <span class="work-badge badge-off">OFF</span>
+                        </div>
+                        <p class="work-title">VS Code | Kryhub</p>
+                        <p class="work-desc">Hub modification · WindUI · advanced scripts</p>
+                        <p class="work-meta"><i class="fas fa-crown"></i> Owner</p>
+                    </div>
+
+                    <div class="work-card">
+                        <div class="work-top">
+                            <div class="work-icons">
+                                <i class="fab fa-roblox work-icon"></i>
+                                <i class="fas fa-person work-icon"></i>
+                            </div>
+                            <span class="work-badge badge-retired">RETIRED</span>
+                        </div>
+                        <p class="work-title">Steal a Latam</p>
+                        <p class="work-desc">Large Roblox project · 8 collaborators</p>
+                        <p class="work-meta"><i class="fas fa-eye"></i> 1.1M visits · Builder</p>
+                    </div>
+
+                    <div class="work-card">
+                        <div class="work-top">
+                            <i class="fas fa-comment-dots work-icon"></i>
+                            <span class="work-badge badge-deleted">DELETED</span>
+                        </div>
+                        <p class="work-title">Chat sin censura</p>
+                        <p class="work-desc">Team project · removed by Roblox</p>
+                        <p class="work-meta"><i class="fas fa-eye"></i> 100K visits · Scripter</p>
+                    </div>
+
+                    <div class="work-card">
+                        <div class="work-top">
+                            <i class="fas fa-crosshairs work-icon"></i>
+                            <span class="work-badge badge-retired">RETIRED</span>
+                        </div>
+                        <p class="work-title">Assassin VS Sheriff</p>
+                        <p class="work-desc">Competitive Roblox game · 6 collaborators</p>
+                        <p class="work-meta"><i class="fas fa-eye"></i> 26.2M visits · Mod</p>
+                    </div>
+
+                </div>
+            </div>
+        </section>
+
+    </div><!-- /site-wrapper -->
 
     <script src="script.js"></script>
 </body>

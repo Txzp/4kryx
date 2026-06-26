@@ -6,19 +6,19 @@
     document.addEventListener('selectstart', e => e.preventDefault());
     document.addEventListener('dragstart',   e => e.preventDefault());
 
-    /* ── Detect phone only (NOT touchscreen laptops/tablets ≥ 1024px) ── */
+    /* ── Detect phone only (NOT touchscreen laptops ≥ 1024px) ── */
     const isPhone = (
         window.matchMedia('(hover: none) and (pointer: coarse)').matches
         || navigator.maxTouchPoints > 0
     ) && window.innerWidth <= 768;
 
-    const isMobile = isPhone;
-
     /* ── Custom cursor — desktop only ── */
     const cursor = document.getElementById('customCursor');
     let cursorVisible = false;
+    let mouseX = window.innerWidth  / 2;
+    let mouseY = window.innerHeight / 2;
 
-    if (!isMobile && cursor) {
+    if (!isPhone && cursor) {
         document.addEventListener('mousemove', e => {
             mouseX = e.clientX;
             mouseY = e.clientY;
@@ -33,14 +33,10 @@
         cursor.style.display = 'none';
     }
 
-    /* ── Canvas ── */
+    /* ── Canvas particle rain ── */
     const canvas = document.getElementById('bgCanvas');
     const ctx    = canvas ? canvas.getContext('2d') : null;
 
-    let mouseX = window.innerWidth  / 2;
-    let mouseY = window.innerHeight / 2;
-
-    /* ── Particle rain — desktop follows cursor, mobile falls straight down ── */
     if (canvas && ctx) {
         function resize() {
             canvas.width  = window.innerWidth;
@@ -55,15 +51,13 @@
         class Particle {
             constructor() { this.reset(true); }
             reset(init) {
-                if (isMobile) {
-                    /* Mobile: start at random x across full width, rain from top */
+                if (isPhone) {
                     this.x = rand(0, canvas.width);
                     this.y = init ? rand(0, canvas.height) : rand(-40, -10);
-                    this.speedX = rand(-0.15, 0.15); /* almost straight down */
+                    this.speedX = rand(-0.15, 0.15);
                 } else {
-                    /* Desktop: spawn near cursor */
-                    const spread = rand(-180, 180);
-                    this.x      = init ? rand(0, canvas.width) : mouseX + spread;
+                    const spread = rand(-200, 200);
+                    this.x      = init ? rand(0, canvas.width)  : mouseX + spread;
                     this.y      = init ? rand(0, canvas.height) : mouseY - rand(10, 70);
                     this.speedX = rand(-0.35, 0.35);
                 }
@@ -102,7 +96,6 @@
         }
 
         const particles = Array.from({ length: 120 }, () => new Particle());
-
         (function loop() {
             ctx.clearRect(0, 0, canvas.width, canvas.height);
             particles.forEach(p => { p.update(); p.draw(); });
@@ -110,9 +103,8 @@
         })();
     }
 
-    /* ── Click / tap ripple animation (both desktop and mobile) ── */
+    /* ── Click / tap ripple ── */
     function spawnTapRipple(x, y) {
-        /* Outer expanding ring */
         const ring = document.createElement('div');
         ring.className = 'tap-ripple';
         ring.style.left = x + 'px';
@@ -120,7 +112,6 @@
         document.body.appendChild(ring);
         ring.addEventListener('animationend', () => ring.remove());
 
-        /* Inner cross symbol */
         const cross = document.createElement('div');
         cross.className = 'tap-cross';
         cross.style.left = x + 'px';
@@ -130,7 +121,7 @@
         cross.addEventListener('animationend', () => cross.remove());
     }
 
-    if (isMobile) {
+    if (isPhone) {
         document.addEventListener('touchstart', e => {
             const t = e.touches[0];
             if (t) spawnTapRipple(t.clientX, t.clientY);
@@ -141,77 +132,11 @@
         });
     }
 
-    /* ── 3D Parallax tilt — card follows mouse in real time ── */
-    const cardScene   = document.getElementById('cardScene');
-    const profileCard = document.getElementById('profileCard');
-
-    let targetRotX = 0, targetRotY = 0;
-    let currentRotX = 0, currentRotY = 0;
-    let cardHovering = false;
-    let tiltRAF = null;
-
-    function animateTilt() {
-        /* Lerp — fast when hovering, slow spring return when not */
-        const lerpFactor = cardHovering ? 0.10 : 0.055;
-        currentRotX += (targetRotX - currentRotX) * lerpFactor;
-        currentRotY += (targetRotY - currentRotY) * lerpFactor;
-
-        const stillMoving = Math.abs(currentRotX) > 0.02 || Math.abs(currentRotY) > 0.02;
-
-        if (profileCard) {
-            profileCard.style.transform =
-                `rotateY(${currentRotY.toFixed(2)}deg) rotateX(${currentRotX.toFixed(2)}deg) scale(${cardHovering ? 1.015 : 1})`;
-        }
-
-        if (cardHovering || stillMoving) {
-            tiltRAF = requestAnimationFrame(animateTilt);
-        } else {
-            /* Fully back to normal — clear inline style */
-            if (profileCard) profileCard.style.transform = '';
-            tiltRAF = null;
-        }
-    }
-
-    function startTilt() {
-        if (!tiltRAF) tiltRAF = requestAnimationFrame(animateTilt);
-    }
-
-    if (cardScene && profileCard) {
-        /* Remove any CSS transition — JS lerp handles smoothness */
-        profileCard.style.transition = 'box-shadow 0.4s ease';
-
-        cardScene.addEventListener('mouseenter', () => {
-            cardHovering = true;
-            profileCard.classList.add('hovered');
-            startTilt();
-        });
-
-        cardScene.addEventListener('mousemove', e => {
-            const rect     = cardScene.getBoundingClientRect();
-            const centerX  = rect.left + rect.width  / 2;
-            const centerY  = rect.top  + rect.height / 2;
-            const normX    = (e.clientX - centerX) / (rect.width  / 2); /* -1 … 1 */
-            const normY    = (e.clientY - centerY) / (rect.height / 2); /* -1 … 1 */
-
-            targetRotY =  normX * 22;   /* max ±22° left-right */
-            targetRotX = -normY * 13;   /* max ±13° up-down    */
-        });
-
-        cardScene.addEventListener('mouseleave', () => {
-            cardHovering = false;
-            targetRotX = 0;
-            targetRotY = 0;
-            profileCard.classList.remove('hovered');
-            startTilt(); /* keep animating until card springs back */
-        });
-    }
-
-    /* ── Click To Enter overlay ── */
-    const overlay  = document.getElementById('enterOverlay');
-    const enterBtn = document.getElementById('enterBtn');
-    const audio    = document.getElementById('bgAudio');
-    const mIcon    = document.getElementById('musicIcon');
-    let   musicOn  = false;
+    /* ── Enter overlay ── */
+    const overlay = document.getElementById('enterOverlay');
+    const audio   = document.getElementById('bgAudio');
+    const mIcon   = document.getElementById('musicIcon');
+    let   musicOn = false;
 
     function tryPlayMusic() {
         if (!audio || musicOn) return;
@@ -222,8 +147,8 @@
         }).catch(() => {});
     }
 
-    if (enterBtn) {
-        enterBtn.addEventListener('click', () => {
+    if (overlay) {
+        overlay.addEventListener('click', () => {
             overlay.classList.add('fade-out');
             tryPlayMusic();
             setTimeout(() => {
@@ -232,112 +157,24 @@
         });
     }
 
-    /* ── Typewriter for name ── */
-    const nameEl = document.getElementById('typedName');
-    const NAME   = 'angel';
-    let ni = 0;
-
-    function typeName() {
-        if (!nameEl) return;
-        if (ni <= NAME.length) {
-            nameEl.textContent = NAME.slice(0, ni);
-            ni++;
-            setTimeout(typeName, 105);
-        }
-    }
-    setTimeout(typeName, 500);
-
-    /* ── Tabs ── */
-    document.querySelectorAll('.tab-btn').forEach(btn => {
-        btn.addEventListener('click', () => {
-            document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
-            document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
-            btn.classList.add('active');
-            const panel = document.getElementById('tab-' + btn.dataset.tab);
-            if (panel) panel.classList.add('active');
-        });
-    });
-
-    /* ── Visitor counter — UUID per browser, no refresh re-count ── */
-    (function () {
-        const KEY = 'vuid_4kryx';
-        let vid = localStorage.getItem(KEY);
-        if (!vid) {
-            /* Generate a unique visitor ID and store it */
-            vid = (crypto.randomUUID
-                ? crypto.randomUUID()
-                : Date.now().toString(36) + Math.random().toString(36).slice(2)
-            );
-            localStorage.setItem(KEY, vid);
-        }
-
-        fetch('/api/visitors', {
-            method:  'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body:    JSON.stringify({ id: vid }),
-        })
-        .then(r => r.json())
-        .then(data => {
-            const el = document.getElementById('visitorCount');
-            if (!el) return;
-            const target = data.count || 0;
-            const step   = Math.max(1, Math.floor(target / 40));
-            let count    = 0;
-            const t = setInterval(() => {
-                count = Math.min(count + step, target);
-                el.textContent = count.toLocaleString();
-                if (count >= target) clearInterval(t);
-            }, 35);
-        })
-        .catch(() => {});
-    })();
-
     /* ── About panel toggle ── */
-    const aboutBtn    = document.getElementById('aboutBtn');
-    const aboutPanel  = document.getElementById('aboutPanel');
-    const aboutClose  = document.getElementById('aboutClose');
-    const pageWrapper = document.querySelector('.page-wrapper');
-    let aboutOpen     = false;
+    const aboutBtn   = document.getElementById('aboutBtn');
+    const aboutPanel = document.getElementById('aboutPanel');
+    const aboutClose = document.getElementById('aboutClose');
 
-    function openAbout() {
-        if (aboutOpen) return;
-        aboutOpen = true;
-        /* Fade out main content */
-        pageWrapper.classList.add('content-hide');
-        pageWrapper.addEventListener('animationend', () => {
-            pageWrapper.style.opacity = '0';
-            pageWrapper.style.pointerEvents = 'none';
-            pageWrapper.classList.remove('content-hide');
-            /* Show about panel */
-            aboutPanel.classList.remove('panel-hide');
-            aboutPanel.classList.add('panel-show');
-        }, { once: true });
+    if (aboutBtn && aboutPanel) {
+        aboutBtn.addEventListener('click', () => {
+            aboutPanel.classList.toggle('panel-open');
+        });
+    }
+    if (aboutClose && aboutPanel) {
+        aboutClose.addEventListener('click', () => {
+            aboutPanel.classList.remove('panel-open');
+        });
     }
 
-    function closeAbout() {
-        if (!aboutOpen) return;
-        aboutOpen = false;
-        /* Fade out about panel */
-        aboutPanel.classList.remove('panel-show');
-        aboutPanel.classList.add('panel-hide');
-        aboutPanel.addEventListener('animationend', () => {
-            aboutPanel.classList.remove('panel-hide');
-            /* Fade in main content */
-            pageWrapper.style.opacity = '';
-            pageWrapper.style.pointerEvents = '';
-            pageWrapper.classList.add('content-show');
-            pageWrapper.addEventListener('animationend', () => {
-                pageWrapper.classList.remove('content-show');
-            }, { once: true });
-        }, { once: true });
-    }
-
-    if (aboutBtn)   aboutBtn.addEventListener('click',   openAbout);
-    if (aboutClose) aboutClose.addEventListener('click', closeAbout);
-
-    /* ── Music toggle button ── */
+    /* ── Music toggle ── */
     const mToggle = document.getElementById('musicToggle');
-
     if (mToggle) {
         mToggle.addEventListener('click', () => {
             if (!audio) return;
@@ -352,36 +189,156 @@
         });
     }
 
+    /* ── Live EST clock ── */
+    function updateClock() {
+        const tz = 'America/New_York';
+        const now = new Date();
+        const timeStr = now.toLocaleTimeString('en-US', {
+            timeZone: tz, hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: true
+        });
+        const dateStr = now.toLocaleDateString('en-US', {
+            timeZone: tz, weekday: 'short', month: 'short', day: 'numeric'
+        });
+        const tzClock = document.getElementById('tzClock');
+        const tzDate  = document.getElementById('tzDate');
+        if (tzClock) tzClock.textContent = timeStr;
+        if (tzDate)  tzDate.textContent  = dateStr;
+    }
+    updateClock();
+    setInterval(updateClock, 1000);
+
+    /* ── Scroll parallax on angel text ── */
+    const siteWrapper = document.getElementById('siteWrapper');
+    const angelEl     = document.querySelector('.hero-angel');
+
+    if (siteWrapper && angelEl) {
+        siteWrapper.addEventListener('scroll', () => {
+            const progress = Math.min(siteWrapper.scrollTop / window.innerHeight, 1);
+            angelEl.style.transform   = `translateY(${-progress * 22}px)`;
+            angelEl.style.opacity     = String(1 - progress * 0.55);
+            angelEl.style.letterSpacing = `${0.06 + progress * 0.14}em`;
+        }, { passive: true });
+    }
+
+    /* ── kryshub typewriter loop ── */
+    const kryshubEl = document.getElementById('kryshubTyped');
+    const KRYSHUB   = 'kryshub';
+    let   kIdx      = 0;
+    let   kDeleting = false;
+
+    function kryshubTick() {
+        if (!kryshubEl) return;
+        if (!kDeleting) {
+            kIdx++;
+            kryshubEl.textContent = KRYSHUB.slice(0, kIdx);
+            if (kIdx >= KRYSHUB.length) {
+                kDeleting = true;
+                setTimeout(kryshubTick, 2200);
+                return;
+            }
+            setTimeout(kryshubTick, 110);
+        } else {
+            kIdx--;
+            kryshubEl.textContent = KRYSHUB.slice(0, kIdx);
+            if (kIdx <= 0) {
+                kDeleting = false;
+                setTimeout(kryshubTick, 600);
+                return;
+            }
+            setTimeout(kryshubTick, 65);
+        }
+    }
+    setTimeout(kryshubTick, 400);
+
+    /* ── Scroll dots — IntersectionObserver ── */
+    const sections = document.querySelectorAll('.section');
+    const dots     = document.querySelectorAll('.scroll-dot');
+
+    if (sections.length && dots.length) {
+        const io = new IntersectionObserver(entries => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    const idx = [...sections].indexOf(entry.target);
+                    dots.forEach((d, i) => d.classList.toggle('active', i === idx));
+                }
+            });
+        }, { root: document.getElementById('siteWrapper'), threshold: 0.55 });
+
+        sections.forEach(s => io.observe(s));
+
+        /* Dot click → scroll to that section */
+        dots.forEach(dot => {
+            dot.addEventListener('click', () => {
+                const idx = parseInt(dot.dataset.section, 10);
+                scrollToSection(idx);
+            });
+        });
+    }
+
+    /* ── Visitor counter ── */
+    (function () {
+        const KEY = 'vuid_4kryx';
+        let vid = localStorage.getItem(KEY);
+        if (!vid) {
+            vid = (crypto.randomUUID
+                ? crypto.randomUUID()
+                : Date.now().toString(36) + Math.random().toString(36).slice(2)
+            );
+            localStorage.setItem(KEY, vid);
+        }
+
+        fetch('/api/visitors', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ id: vid }),
+        })
+        .then(r => r.json())
+        .then(data => {
+            const el = document.getElementById('visitorCount');
+            if (el && data.count !== undefined) {
+                el.textContent = data.count.toLocaleString();
+            }
+        })
+        .catch(() => {});
+    })();
+
 })();
+
+/* ── Global: scroll to section by index ── */
+function scrollToSection(idx) {
+    const wrapper  = document.getElementById('siteWrapper');
+    const sections = wrapper ? wrapper.querySelectorAll('.section') : [];
+    if (sections[idx]) {
+        sections[idx].scrollIntoView({ behavior: 'smooth' });
+    }
+}
 
 /* ── Discord Presence ── */
 async function updateDiscordPresence() {
-  try {
-    const res = await fetch("https://rpc-bot-production.up.railway.app/api/presence");
-    const data = await res.json();
+    try {
+        const res  = await fetch('https://rpc-bot-production.up.railway.app/api/presence');
+        const data = await res.json();
 
-    const avatar = document.querySelector(".discord-avatar");
-    if (avatar && data.user?.avatar) avatar.src = data.user.avatar;
+        const avatar = document.querySelector('.discord-avatar');
+        if (avatar && data.user?.avatar) avatar.src = data.user.avatar;
 
-    const username = document.querySelector(".discord-username");
-    if (username && data.user?.displayName) username.textContent = data.user.displayName;
+        const username = document.querySelector('.discord-username');
+        if (username && data.user?.displayName) username.textContent = data.user.displayName;
 
-    const dot = document.querySelector(".discord-status-dot");
-    if (dot) {
-      dot.className = "discord-status-dot";
-      dot.classList.add("status-" + (data.status || "offline"));
-    }
+        const dot = document.querySelector('.discord-status-dot');
+        if (dot) {
+            dot.className = 'discord-status-dot';
+            dot.classList.add('status-' + (data.status || 'offline'));
+        }
 
-    const activity = data.activities?.find(a => a.type === 0);
-    const activityName = document.querySelector(".activity-name");
-    if (activityName) activityName.textContent = activity?.name || "Idle";
+        const activity    = data.activities?.find(a => a.type === 0);
+        const activityName = document.querySelector('.activity-name');
+        if (activityName) activityName.textContent = activity?.name || '';
 
-    const activityLabel = document.querySelector(".activity-label");
-    if (activityLabel) activityLabel.textContent = activity ? "Playing" : "Idle";
+        const activityLabel = document.querySelector('.activity-label');
+        if (activityLabel) activityLabel.textContent = activity ? 'Playing' : 'Idle';
 
-  } catch (e) {
-    console.error("Presence error:", e);
-  }
+    } catch (e) { /* silent */ }
 }
 
 updateDiscordPresence();
