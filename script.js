@@ -207,6 +207,49 @@
     updateClock();
     setInterval(updateClock, 1000);
 
+    /* ── "developer | creator" typewriter ── */
+    const devTypedEl = document.getElementById('devTyped');
+    const DEV_TEXT   = 'developer | creator';
+    let   dIdx       = 0;
+    let   dDeleting  = false;
+
+    function devTick() {
+        if (!devTypedEl) return;
+        if (!dDeleting) {
+            dIdx++;
+            devTypedEl.textContent = DEV_TEXT.slice(0, dIdx);
+            if (dIdx >= DEV_TEXT.length) {
+                dDeleting = true;
+                setTimeout(devTick, 2800);
+                return;
+            }
+            setTimeout(devTick, 85);
+        } else {
+            dIdx--;
+            devTypedEl.textContent = DEV_TEXT.slice(0, dIdx);
+            if (dIdx <= 0) {
+                dDeleting = false;
+                setTimeout(devTick, 700);
+                return;
+            }
+            setTimeout(devTick, 48);
+        }
+    }
+    setTimeout(devTick, 300);
+
+    /* ── Scroll reveal — IntersectionObserver ── */
+    const revealEls = document.querySelectorAll('.scroll-reveal');
+    if (revealEls.length) {
+        const revealIO = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('in-view');
+                }
+            });
+        }, { root: document.getElementById('siteWrapper'), threshold: 0.15 });
+        revealEls.forEach(el => revealIO.observe(el));
+    }
+
     /* ── Scroll parallax on angel text ── */
     const siteWrapper = document.getElementById('siteWrapper');
     const angelEl     = document.querySelector('.hero-angel');
