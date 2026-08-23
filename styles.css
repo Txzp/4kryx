@@ -329,33 +329,9 @@ body {
     50%       { transform: translateY(-9px); }
 }
 
-/* angel name — standalone (scroll parallax applied via JS) */
-.hero-angel {
-    font-family: 'UnifrakturMaguntia', cursive;
-    font-size: 2rem;
-    color: #fff;
-    filter: drop-shadow(0 0 14px rgba(255,255,255,0.45));
-    display: block;
-    text-align: center;
-    will-change: transform, opacity;
-    transition: filter 0.05s linear;
-}
+ 
 
-/* kryshub typewriter wrap — standalone */
-.hero-kryshub-wrap {
-    display: flex;
-    align-items: baseline;
-    justify-content: center;
-    margin-top: -0.3rem;
-}
-.hero-kryshub {
-    font-family: 'Orbitron', monospace;
-    font-size: 1.5rem;
-    font-weight: 700;
-    letter-spacing: 0.1em;
-    color: #fff;
-    filter: drop-shadow(0 0 18px rgba(255,255,255,0.3));
-}
+ 
 .hero-cursor {
     font-family: 'Orbitron', monospace;
     font-size: 1.5rem;
