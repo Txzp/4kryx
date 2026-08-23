@@ -172,23 +172,6 @@
         });
     }
 
-    /* ── Live EST clock ── */
-    function updateClock() {
-        const tz = 'America/New_York';
-        const now = new Date();
-        const timeStr = now.toLocaleTimeString('en-US', {
-            timeZone: tz, hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: true
-        });
-        const dateStr = now.toLocaleDateString('en-US', {
-            timeZone: tz, weekday: 'short', month: 'short', day: 'numeric'
-        });
-        const tzClock = document.getElementById('tzClock');
-        const tzDate  = document.getElementById('tzDate');
-        if (tzClock) tzClock.textContent = timeStr;
-        if (tzDate)  tzDate.textContent  = dateStr;
-    }
-    updateClock();
-    setInterval(updateClock, 1000);
 
     /* ── "developer | creator" typewriter ── */
     const devTypedEl = document.getElementById('devTyped');
@@ -231,19 +214,6 @@
             });
         }, { root: document.getElementById('siteWrapper'), threshold: 0.15 });
         revealEls.forEach(el => revealIO.observe(el));
-    }
-
-    /* ── Scroll parallax on angel text ── */
-    const siteWrapper = document.getElementById('siteWrapper');
-    const angelEl     = document.querySelector('.hero-angel');
-
-    if (siteWrapper && angelEl) {
-        siteWrapper.addEventListener('scroll', () => {
-            const progress = Math.min(siteWrapper.scrollTop / window.innerHeight, 1);
-            angelEl.style.transform   = `translateY(${-progress * 22}px)`;
-            angelEl.style.opacity     = String(1 - progress * 0.55);
-            angelEl.style.letterSpacing = `${0.06 + progress * 0.14}em`;
-        }, { passive: true });
     }
 
 
