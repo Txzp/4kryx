@@ -461,58 +461,6 @@ body {
 .activity-label  { color: rgba(255,255,255,0.32); white-space: nowrap; }
 .activity-name   { color: rgba(255,255,255,0.62); font-weight: 500; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 
-/* Timezone widget */
-.timezone-widget {
-    flex: 1;
-    min-width: 0;
-    background: rgba(255,255,255,0.05);
-    border: 1.5px solid rgba(255,255,255,0.16);
-    border-top: 1.5px solid rgba(255,255,255,0.28);
-    border-radius: 12px;
-    padding: 0.7rem 0.85rem;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    transition: background 0.3s, border-color 0.3s, box-shadow 0.3s;
-    box-shadow: inset 0 1px 0 rgba(255,255,255,0.06);
-}
-.timezone-widget:hover {
-    background: rgba(255,255,255,0.1);
-    border-color: rgba(255,255,255,0.3);
-    box-shadow: 0 4px 20px rgba(0,0,0,0.4), inset 0 1px 0 rgba(255,255,255,0.1);
-}
-.tz-inner {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 0.1rem;
-}
-.tz-label-top {
-    font-size: 0.57rem;
-    color: rgba(255,255,255,0.3);
-    text-transform: uppercase;
-    letter-spacing: 0.13em;
-    font-family: 'Orbitron', monospace;
-    margin-bottom: 0.08rem;
-}
-.tz-clock {
-    font-family: 'Orbitron', monospace;
-    font-size: 0.78rem;
-    font-weight: 700;
-    color: #fff;
-    letter-spacing: 0.03em;
-}
-.tz-date {
-    font-size: 0.62rem;
-    color: rgba(255,255,255,0.48);
-}
-.tz-location {
-    font-size: 0.57rem;
-    color: rgba(255,255,255,0.27);
-    text-transform: uppercase;
-    letter-spacing: 0.09em;
-    margin-top: 0.04rem;
-}
 
 /* ═══════════════════════════════════════════
    SCROLL REVEAL
