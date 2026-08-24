@@ -12,54 +12,32 @@
         || navigator.maxTouchPoints > 0
     ) && window.innerWidth <= 768;
 
-    /* ── Custom cursor — desktop only ── */
-    const cursor = document.getElementById('customCursor');
-    let cursorVisible = false;
-    let mouseX = window.innerWidth  / 2;
-    let mouseY = window.innerHeight / 2;
+    /* ── Default browser cursor ── */
 
-    if (!isPhone && cursor) {
-        document.addEventListener('mousemove', e => {
-            mouseX = e.clientX;
-            mouseY = e.clientY;
-            cursor.style.left = e.clientX + 'px';
-            cursor.style.top  = e.clientY + 'px';
-            if (!cursorVisible) {
-                cursor.style.opacity = '1';
-                cursorVisible = true;
-            }
-        });
-    } else if (cursor) {
-        cursor.style.display = 'none';
-    }
-
-    /* ── Click / tap ripple ── */
-    function spawnTapRipple(x, y) {
-        const ring = document.createElement('div');
-        ring.className = 'tap-ripple';
-        ring.style.left = x + 'px';
-        ring.style.top  = y + 'px';
-        document.body.appendChild(ring);
-        ring.addEventListener('animationend', () => ring.remove());
-
-        const cross = document.createElement('div');
-        cross.className = 'tap-cross';
-        cross.style.left = x + 'px';
-        cross.style.top  = y + 'px';
-        cross.textContent = '✦';
-        document.body.appendChild(cross);
-        cross.addEventListener('animationend', () => cross.remove());
-    }
-
-    if (isPhone) {
-        document.addEventListener('touchstart', e => {
-            const t = e.touches[0];
-            if (t) spawnTapRipple(t.clientX, t.clientY);
-        }, { passive: true });
-    } else {
-        document.addEventListener('click', e => {
-            spawnTapRipple(e.clientX, e.clientY);
-        });
+    /* ── Ambient snow background ── */
+    const canvas = document.getElementById('bgCanvas');
+    const ctx = canvas ? canvas.getContext('2d') : null;
+    if (canvas && ctx) {
+        function resize() { canvas.width = window.innerWidth; canvas.height = window.innerHeight; }
+        resize();
+        window.addEventListener('resize', resize);
+        const flakes = Array.from({ length: 150 }, () => ({
+            x: Math.random() * canvas.width, y: Math.random() * canvas.height,
+            r: Math.random() * 2 + 0.8, speed: Math.random() * 1.1 + 0.35,
+            drift: Math.random() * 0.5 - 0.25, alpha: Math.random() * 0.55 + 0.2
+        }));
+        (function snowLoop() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            flakes.forEach(f => {
+                f.y += f.speed; f.x += f.drift;
+                if (f.y > canvas.height + 6) { f.y = -6; f.x = Math.random() * canvas.width; }
+                if (f.x < -6) f.x = canvas.width + 6;
+                if (f.x > canvas.width + 6) f.x = -6;
+                ctx.beginPath(); ctx.arc(f.x, f.y, f.r, 0, Math.PI * 2);
+                ctx.fillStyle = 'rgba(255,255,255,' + f.alpha + ')'; ctx.fill();
+            });
+            requestAnimationFrame(snowLoop);
+        })();
     }
 
     /* ── Enter overlay ── */
