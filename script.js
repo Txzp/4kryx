@@ -81,9 +81,9 @@
         const copyHandle = () => {
             navigator.clipboard?.writeText(copyable.dataset.copy || copyable.textContent.trim());
             copyable.classList.add('copied');
-            copyable.textContent = 'Copied: x.zk.';
+            copyable.textContent = 'Copied: .xl.r';
             setTimeout(() => {
-                copyable.textContent = 'dc: x.zk.';
+                copyable.textContent = 'dc: .xl.r';
                 copyable.classList.remove('copied');
             }, 1400);
         };
