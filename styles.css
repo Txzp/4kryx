@@ -20,8 +20,8 @@ body {
     overflow: hidden;
     background: #000000;
     -webkit-font-smoothing: antialiased;
-    user-select: none;
-    -webkit-user-select: none;
+    user-select: auto;
+    -webkit-user-select: auto;
 }
 
 /* ═══════════════════════════════════════════
@@ -34,6 +34,16 @@ body {
     height: 100%;
     z-index: 0;
     pointer-events: none;
+}
+#enterOverlay {
+    position: fixed;
+    inset: 0;
+    z-index: 9000;
+    display: grid;
+    place-items: center;
+    background: #030303;
+    opacity: 1;
+    transition: opacity .7s ease;
 }
 #enterOverlay.fade-out {
     opacity: 0;
@@ -74,7 +84,7 @@ body {
     font-size: 0.68rem;
     letter-spacing: 0.3em;
     text-transform: uppercase;
-    color: rgba(255,255,255,0.35);
+    color: rgba(255,255,255,0.58);
     animation: enterGlow 2.5s ease-in-out infinite alternate;
 }
 @keyframes enterGlow {
@@ -556,12 +566,12 @@ body {
 .work-card {
     position: relative;
     overflow: hidden;
-    min-height: 148px;
-    background: linear-gradient(145deg, rgba(255,255,255,0.095), rgba(255,255,255,0.025));
-    border: 1px solid rgba(255,255,255,0.14);
-    border-top-color: rgba(255,255,255,0.3);
-    border-radius: 16px;
-    padding: 1.15rem 1.15rem 1rem;
+    min-height: 174px;
+    background: linear-gradient(145deg, rgba(255,255,255,0.13), rgba(255,255,255,0.025) 70%);
+    border: 1px solid rgba(255,255,255,0.2);
+    border-top-color: rgba(255,255,255,0.48);
+    border-radius: 18px;
+    padding: 1.25rem 1.25rem 1.05rem;
     display: flex;
     flex-direction: column;
     gap: 0.55rem;
@@ -600,8 +610,9 @@ body {
     justify-content: space-between;
 }
 .work-icon {
-    font-size: 1.05rem;
-    color: rgba(255,255,255,0.55);
+    font-size: 1.25rem;
+    color: rgba(255,255,255,0.86);
+    filter: drop-shadow(0 0 8px rgba(255,255,255,.22));
 }
 .work-badge {
     font-size: 0.56rem;
@@ -618,18 +629,18 @@ body {
 .badge-deleted { background: rgba(239,68,68,0.13);   color: #f87171; border: 1px solid rgba(239,68,68,0.28); }
 
 .work-title {
-    font-size: 0.84rem;
-    font-weight: 600;
+    font-size: 0.96rem;
+    font-weight: 700;
     color: #fff;
 }
 .work-desc {
-    font-size: 0.71rem;
-    color: rgba(255,255,255,0.48);
+    font-size: 0.75rem;
+    color: rgba(255,255,255,0.68);
     line-height: 1.45;
 }
 .work-meta {
     font-size: 0.65rem;
-    color: rgba(255,255,255,0.32);
+    color: rgba(255,255,255,0.74);
     display: flex;
     align-items: center;
     gap: 0.3rem;
@@ -755,14 +766,18 @@ body {
 
 /* Main identity */
 .main-identity { align-self: flex-start; text-align: left; margin: 0 0 1.4rem clamp(1rem, 7vw, 7rem); animation: identityIn 1s ease both; }
-.main-identity h1 { margin: 0; font-family: 'Orbitron', sans-serif; font-size: clamp(2.3rem, 6vw, 5rem); font-weight: 600; letter-spacing: 0.08em; color: #fff; }
-.main-identity p { margin: 0.4rem 0 0; color: rgba(255,255,255,0.58); font: 500 clamp(0.75rem, 1.3vw, 1rem) 'Space Grotesk', sans-serif; letter-spacing: 0.18em; }
+.main-identity h1 { margin: 0; font-family: 'Orbitron', sans-serif; font-size: clamp(2.3rem, 6vw, 5rem); font-weight: 600; letter-spacing: 0.08em; color: #fff; animation: titleGlow 3.8s ease-in-out infinite; }
+.main-identity p { margin: 0.4rem 0 0; color: rgba(255,255,255,0.78); font: 500 clamp(0.75rem, 1.3vw, 1rem) 'Space Grotesk', sans-serif; letter-spacing: 0.18em; transition: color .25s, text-shadow .25s; }
+.main-identity p:hover, .main-identity p.copied { color: #fff; text-shadow: 0 0 16px rgba(255,255,255,.75); }
+.copyable { cursor: copy; user-select: text; -webkit-user-select: text; }
 @keyframes identityIn { from { opacity: 0; transform: translateX(-28px); } to { opacity: 1; transform: translateX(0); } }
+@keyframes titleGlow { 0%, 100% { text-shadow: 0 0 0 rgba(255,255,255,0); transform: translateX(0); } 50% { text-shadow: 0 0 22px rgba(255,255,255,.3); transform: translateX(3px); } }
 
 /* Large language and app cards */
 .skills-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(112px, 1fr)); gap: 0.8rem; width: min(760px, 92vw); }
-.skill-card { min-height: 112px; padding: 1rem 0.65rem 0.85rem; border: 1px solid rgba(255,255,255,0.13); border-radius: 14px; background: rgba(255,255,255,0.035); display: flex; flex-direction: column; align-items: center; justify-content: space-between; gap: 0.7rem; transition: transform .35s ease, border-color .35s ease, background .35s ease, box-shadow .35s ease; }
+.skill-card { min-height: 136px; padding: 1.15rem 0.65rem 1rem; border: 1px solid rgba(255,255,255,0.18); border-radius: 16px; background: linear-gradient(145deg, rgba(255,255,255,0.09), rgba(255,255,255,0.025)); display: flex; flex-direction: column; align-items: center; justify-content: space-between; gap: 0.7rem; transition: transform .35s ease, border-color .35s ease, background .35s ease, box-shadow .35s ease; }
 .skill-card img, .skill-card .skill-icon { width: 42px; height: 42px; object-fit: contain; font-size: 2.15rem; color: rgba(255,255,255,0.8); }
 .skill-card span { color: rgba(255,255,255,0.82); font: 600 0.72rem 'Space Grotesk', sans-serif; text-align: center; }
 .skill-card:hover { transform: translateY(-8px) scale(1.025); border-color: rgba(255,255,255,0.42); background: rgba(255,255,255,0.1); box-shadow: 0 16px 34px rgba(0,0,0,0.38), 0 0 22px rgba(255,255,255,0.06); }
 .works-empty { color: rgba(255,255,255,0.55); }
+
