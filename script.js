@@ -1,11 +1,5 @@
 (function () {
 
-    /* ── Prevent copy / selection ── */
-    document.addEventListener('copy',        e => e.preventDefault());
-    document.addEventListener('cut',         e => e.preventDefault());
-    document.addEventListener('selectstart', e => e.preventDefault());
-    document.addEventListener('dragstart',   e => e.preventDefault());
-
     /* ── Detect phone only (NOT touchscreen laptops ≥ 1024px) ── */
     const isPhone = (
         window.matchMedia('(hover: none) and (pointer: coarse)').matches
@@ -78,6 +72,27 @@
     if (aboutClose && aboutPanel) {
         aboutClose.addEventListener('click', () => {
             aboutPanel.classList.remove('panel-open');
+        });
+    }
+
+    /* ── Copyable Discord handle ── */
+    const copyable = document.querySelector('.copyable');
+    if (copyable) {
+        const copyHandle = () => {
+            navigator.clipboard?.writeText(copyable.dataset.copy || copyable.textContent.trim());
+            copyable.classList.add('copied');
+            copyable.textContent = 'Copied: x.zk.';
+            setTimeout(() => {
+                copyable.textContent = 'dc: x.zk.';
+                copyable.classList.remove('copied');
+            }, 1400);
+        };
+        copyable.addEventListener('click', copyHandle);
+        copyable.addEventListener('keydown', event => {
+            if (event.key === 'Enter' || event.key === ' ') {
+                event.preventDefault();
+                copyHandle();
+            }
         });
     }
 
