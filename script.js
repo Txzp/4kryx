@@ -33,59 +33,6 @@
         cursor.style.display = 'none';
     }
 
-    /* ── Ambient snow — soft drift influenced by cursor position ── */
-    const canvas = document.getElementById('bgCanvas');
-    const ctx    = canvas ? canvas.getContext('2d') : null;
-
-    if (canvas && ctx) {
-        let windTarget = 0;
-        let wind = 0;
-        function resize() {
-            canvas.width  = window.innerWidth;
-            canvas.height = window.innerHeight;
-        }
-        resize();
-        window.addEventListener('resize', resize);
-        document.addEventListener('mousemove', e => {
-            windTarget = (e.clientX / window.innerWidth - 0.5) * 0.85;
-        });
-
-        function rand(a, b) { return Math.random() * (b - a) + a; }
-        class Snowflake {
-            constructor() { this.reset(true); }
-            reset(initial) {
-                this.x = rand(0, canvas.width);
-                this.y = initial ? rand(0, canvas.height) : rand(-28, -4);
-                this.radius = rand(1.1, 2.7);
-                this.speed = rand(0.45, 1.35);
-                this.sway = rand(0.008, 0.022);
-                this.phase = rand(0, Math.PI * 2);
-                this.alpha = rand(0.3, 0.78);
-            }
-            update() {
-                this.y += this.speed;
-                this.phase += this.sway;
-                this.x += Math.sin(this.phase) * 0.22 + wind;
-                if (this.y > canvas.height + 8) this.reset(false);
-                if (this.x < -8) this.x = canvas.width + 8;
-                if (this.x > canvas.width + 8) this.x = -8;
-            }
-            draw() {
-                ctx.beginPath();
-                ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
-                ctx.fillStyle = 'rgba(255,255,255,' + this.alpha + ')';
-                ctx.fill();
-            }
-        }
-        const snowflakes = Array.from({ length: 145 }, () => new Snowflake());
-        (function loop() {
-            wind += (windTarget - wind) * 0.018;
-            ctx.clearRect(0, 0, canvas.width, canvas.height);
-            snowflakes.forEach(flake => { flake.update(); flake.draw(); });
-            requestAnimationFrame(loop);
-        })();
-    }
-
     /* ── Click / tap ripple ── */
     function spawnTapRipple(x, y) {
         const ring = document.createElement('div');
