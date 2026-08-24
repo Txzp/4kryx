@@ -9,7 +9,7 @@
 
 html {
     font-family: 'Space Grotesk', sans-serif;
-    background: #050508;
+    background: #000000;
     color: #fff;
     scroll-behavior: smooth;
 }
@@ -18,7 +18,7 @@ html {
 
 body {
     overflow: hidden;
-    background: #050508;
+    background: #000000;
     -webkit-font-smoothing: antialiased;
     user-select: none;
     -webkit-user-select: none;
@@ -27,24 +27,9 @@ body {
 /* ═══════════════════════════════════════════
    BACKGROUND
 ═══════════════════════════════════════════ */
-#bgCanvas {
-    position: fixed;
-    inset: 0;
-    z-index: 0;
-    pointer-events: none;
-}
+#bgCanvas { display: none; }
 
-#bgVideo {
-    position: fixed;
-    inset: 0;
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    z-index: 0;
-    opacity: 0.16;
-    filter: brightness(0.5) saturate(0.5);
-    pointer-events: none;
-}
+#bgVideo { display: none; }
 
 /* ═══════════════════════════════════════════
    ENTER OVERLAY
@@ -53,7 +38,7 @@ body {
     position: fixed;
     inset: 0;
     z-index: 9999;
-    background: #050508;
+    background: #000000;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -121,8 +106,9 @@ body {
     will-change: left, top;
 }
 #customCursor img {
-    width: 34px;
-    height: auto;
+    width: 42px;
+    height: 42px;
+    object-fit: contain;
     display: block;
     -webkit-user-select: none;
     user-select: none;
@@ -438,7 +424,7 @@ body {
     width: 9px; height: 9px;
     border-radius: 50%;
     background: #ed4245;
-    border: 2px solid #050508;
+    border: 2px solid #000000;
 }
 .discord-info {
     display: flex;
