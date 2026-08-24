@@ -14,7 +14,7 @@ html {
     scroll-behavior: smooth;
 }
 
-* { cursor: none !important; }
+* { cursor: auto; }
 
 body {
     overflow: hidden;
@@ -27,24 +27,13 @@ body {
 /* ═══════════════════════════════════════════
    BACKGROUND
 ═══════════════════════════════════════════ */
-#bgCanvas { display: none; }
-
-#bgVideo { display: none; }
-
-/* ═══════════════════════════════════════════
-   ENTER OVERLAY
-═══════════════════════════════════════════ */
-#enterOverlay {
+#bgCanvas {
     position: fixed;
     inset: 0;
-    z-index: 9999;
-    background: #000000;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    flex-direction: column;
-    gap: 1.2rem;
-    transition: opacity 0.7s ease;
+    width: 100%;
+    height: 100%;
+    z-index: 0;
+    pointer-events: none;
 }
 #enterOverlay.fade-out {
     opacity: 0;
@@ -96,23 +85,7 @@ body {
 /* ═══════════════════════════════════════════
    CUSTOM CURSOR
 ═══════════════════════════════════════════ */
-#customCursor {
-    position: fixed;
-    z-index: 99999;
-    pointer-events: none;
-    transform: translate(-50%, -50%);
-    opacity: 0;
-    transition: opacity 0.3s;
-    will-change: left, top;
-}
-#customCursor img {
-    width: 42px;
-    height: 42px;
-    object-fit: contain;
-    display: block;
-    -webkit-user-select: none;
-    user-select: none;
-}
+#customCursor { display: none; }
 
 /* ═══════════════════════════════════════════
    TAP RIPPLE
@@ -778,3 +751,18 @@ body {
 .status-idle    { background: #f0b232 !important; }
 .status-dnd     { background: #f23f43 !important; }
 .status-offline { background: #80848e !important; }
+
+
+/* Main identity */
+.main-identity { align-self: flex-start; text-align: left; margin: 0 0 1.4rem clamp(1rem, 7vw, 7rem); animation: identityIn 1s ease both; }
+.main-identity h1 { margin: 0; font-family: 'Orbitron', sans-serif; font-size: clamp(2.3rem, 6vw, 5rem); font-weight: 600; letter-spacing: 0.08em; color: #fff; }
+.main-identity p { margin: 0.4rem 0 0; color: rgba(255,255,255,0.58); font: 500 clamp(0.75rem, 1.3vw, 1rem) 'Space Grotesk', sans-serif; letter-spacing: 0.18em; }
+@keyframes identityIn { from { opacity: 0; transform: translateX(-28px); } to { opacity: 1; transform: translateX(0); } }
+
+/* Large language and app cards */
+.skills-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(112px, 1fr)); gap: 0.8rem; width: min(760px, 92vw); }
+.skill-card { min-height: 112px; padding: 1rem 0.65rem 0.85rem; border: 1px solid rgba(255,255,255,0.13); border-radius: 14px; background: rgba(255,255,255,0.035); display: flex; flex-direction: column; align-items: center; justify-content: space-between; gap: 0.7rem; transition: transform .35s ease, border-color .35s ease, background .35s ease, box-shadow .35s ease; }
+.skill-card img, .skill-card .skill-icon { width: 42px; height: 42px; object-fit: contain; font-size: 2.15rem; color: rgba(255,255,255,0.8); }
+.skill-card span { color: rgba(255,255,255,0.82); font: 600 0.72rem 'Space Grotesk', sans-serif; text-align: center; }
+.skill-card:hover { transform: translateY(-8px) scale(1.025); border-color: rgba(255,255,255,0.42); background: rgba(255,255,255,0.1); box-shadow: 0 16px 34px rgba(0,0,0,0.38), 0 0 22px rgba(255,255,255,0.06); }
+.works-empty { color: rgba(255,255,255,0.55); }
